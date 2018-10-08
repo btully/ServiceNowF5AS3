@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_properties">
+    <sys_properties action="INSERT_OR_UPDATE">
+        <choices/>
+        <description>Name of ServiceNow Mid Server that can access your BIG-IPs</description>
+        <ignore_cache>false</ignore_cache>
+        <is_private>false</is_private>
+        <name>x_209235_f5_as3.mid_server</name>
+        <read_roles>x_209235_f5_as3.admin</read_roles>
+        <suffix>mid_server</suffix>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-10-08 16:02:17</sys_created_on>
+        <sys_id>5f4225193701230040a1ae7873990e59</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>x_209235_f5_as3.mid_server</sys_name>
+        <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
+        <sys_update_name>sys_properties_5f4225193701230040a1ae7873990e59</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-10-08 16:04:15</sys_updated_on>
+        <type>short_string</type>
+        <value/>
+        <write_roles>x_209235_f5_as3.admin</write_roles>
+    </sys_properties>
+    <sys_translated_text action="delete_multiple" query="documentkey=5f4225193701230040a1ae7873990e59"/>
+</record_update>

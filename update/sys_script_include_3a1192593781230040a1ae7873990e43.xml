@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_209235_f5_as3.ajaxUtils</api_name>
+        <client_callable>true</client_callable>
+        <description/>
+        <name>ajaxUtils</name>
+        <script><![CDATA[var ajaxUtils = Class.create();
+ajaxUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
+    getEnvironments: function() {
+		var gr = new GlideRecord('x_209235_f5_as3_environment');
+		gr.query();
+		
+		var envList = [];
+		try {
+			while (gr.next()) {
+				envList.push({name: gr.getValue('name'), number: gr.getValue('number')});
+			}
+			//jsonData = new global.JSON().encodeArray(envList);
+			//gs.info(jsonData);
+		}
+		catch (err) {
+			gs.info("ERROR OCCURED " + err);
+		}
+		var response = { answer: envList };
+		
+		//var jsonData = new JSON();
+		//return jsonData.encode(response);
+		return JSON.stringify(response);
+	},
+    type: 'ajaxUtils'
+});]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-10-08 19:42:57</sys_created_on>
+        <sys_id>3a1192593781230040a1ae7873990e43</sys_id>
+        <sys_mod_count>16</sys_mod_count>
+        <sys_name>ajaxUtils</sys_name>
+        <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
+        <sys_update_name>sys_script_include_3a1192593781230040a1ae7873990e43</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-10-08 22:47:40</sys_updated_on>
+    </sys_script_include>
+</record_update>

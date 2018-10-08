@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update>
+    <sys_choice action="INSERT_OR_UPDATE" field="mid_server" table="x_209235_f5_as3_environment" version="3">
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>mid_server</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>local_lab</label>
+            <language>en</language>
+            <name>x_209235_f5_as3_environment</name>
+            <sequence>0</sequence>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2018-10-08 17:36:43</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>fb3875593741230040a1ae7873990eac</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2018-10-08 17:36:43</sys_updated_on>
+            <value>local_lab</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>mid_server</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>East_DC</label>
+            <language>en</language>
+            <name>x_209235_f5_as3_environment</name>
+            <sequence>1</sequence>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2018-10-08 17:36:43</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>8448b5593741230040a1ae7873990e68</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2018-10-08 17:36:43</sys_updated_on>
+            <value>east_dc</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>mid_server</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>West_DC</label>
+            <language>en</language>
+            <name>x_209235_f5_as3_environment</name>
+            <sequence>2</sequence>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2018-10-08 17:36:43</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>0448b5593741230040a1ae7873990e69</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2018-10-08 17:36:43</sys_updated_on>
+            <value>west_dc</value>
+        </sys_choice>
+        <sys_choice_set action="INSERT_OR_UPDATE">
+            <element>mid_server</element>
+            <name>x_209235_f5_as3_environment</name>
+            <sys_class_name>sys_choice_set</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2018-10-08 17:36:43</sys_created_on>
+            <sys_id>4048b5593741230040a1ae7873990e68</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>mid_server</sys_name>
+            <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
+            <sys_update_name>sys_choice_x_209235_f5_as3_environment_mid_server</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2018-10-08 17:36:43</sys_updated_on>
+        </sys_choice_set>
+    </sys_choice>
+</record_update>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_209235_f5_as3.F5DeviceUtils</api_name>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>F5DeviceUtils</name>
+        <script><![CDATA[var F5DeviceUtils = Class.create();
+F5DeviceUtils.prototype = {
+    initialize: function() {
+		this.cluster_table = 'x_209235_f5_as3_bigipcluster';
+		this.environment_table = 'x_209235_f5_as3_environment';
+	},
+    type: 'F5DeviceUtils'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-10-08 18:23:09</sys_created_on>
+        <sys_id>ce020ad93741230040a1ae7873990e66</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>F5DeviceUtils</sys_name>
+        <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
+        <sys_update_name>sys_script_include_ce020ad93741230040a1ae7873990e66</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-10-08 18:23:09</sys_updated_on>
+    </sys_script_include>
+</record_update>

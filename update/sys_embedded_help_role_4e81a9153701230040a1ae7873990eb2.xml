@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_embedded_help_role">
+    <sys_embedded_help_role action="INSERT_OR_UPDATE">
+        <order>1000</order>
+        <role display_value="x_209235_f5_as3.app_owner" name="x_209235_f5_as3.app_owner">936161153701230040a1ae7873990ef4</role>
+        <sys_class_name>sys_embedded_help_role</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-10-08 15:57:29</sys_created_on>
+        <sys_id>4e81a9153701230040a1ae7873990eb2</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>936161153701230040a1ae7873990ef4</sys_name>
+        <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
+        <sys_update_name>sys_embedded_help_role_4e81a9153701230040a1ae7873990eb2</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-10-08 15:57:29</sys_updated_on>
+    </sys_embedded_help_role>
+</record_update>

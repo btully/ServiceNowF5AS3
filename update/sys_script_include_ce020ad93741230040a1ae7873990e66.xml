@@ -3,29 +3,66 @@
     <sys_script_include action="INSERT_OR_UPDATE">
         <access>package_private</access>
         <active>true</active>
-        <api_name>x_209235_f5_as3.F5DeviceUtils</api_name>
+        <api_name>x_209235_f5_as3.f5AppHelper</api_name>
         <client_callable>false</client_callable>
         <description/>
-        <name>F5DeviceUtils</name>
-        <script><![CDATA[var F5DeviceUtils = Class.create();
-F5DeviceUtils.prototype = {
+        <name>f5AppHelper</name>
+        <script><![CDATA[var f5AppHelper = Class.create();
+f5AppHelper.prototype = {
     initialize: function() {
-		this.cluster_table = 'x_209235_f5_as3_bigipcluster';
-		this.environment_table = 'x_209235_f5_as3_environment';
+		this.clusterTable = 'x_209235_f5_as3_bigipcluster';
+		this.environmentTable = 'x_209235_f5_as3_environment';
+		this.applicationTable = 'x_209235_f5_as3_applications';
 	},
-    type: 'F5DeviceUtils'
-};]]></script>
+	getApps: function() { 		
+		var gr = new GlideRecord(this.applicationTable);
+		gr.query();
+		
+		var appList = [];
+		while (gr.next()) {
+			appList.push({
+				name: gr.getValue('name'),
+				number: gr.getValue('number'),
+				as3_definition: gr.getValue('as3_definition')
+			});
+		}
+		
+		return appList;
+	},
+	getClusters: function() { 	
+		var gr = new GlideRecord(this.clusterTable);
+		gr.query();
+		
+		var clusterList = [];
+		while (gr.next()) {
+			clusterList.push({name: gr.getValue('name'), number: gr.getValue('number')});
+		}
+		return clusterList;
+	},
+	getEnvironments: function() {
+		var gr = new GlideRecord(this.environmentTable);
+		gr.query();
+		
+		var envList = [];
+		while (gr.next()) {
+			envList.push({name: gr.getValue('name'), number: gr.getValue('number')});
+		}
+		return envList;
+	},
+    type: 'f5AppHelper'
+};
+]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-10-08 18:23:09</sys_created_on>
         <sys_id>ce020ad93741230040a1ae7873990e66</sys_id>
-        <sys_mod_count>0</sys_mod_count>
-        <sys_name>F5DeviceUtils</sys_name>
+        <sys_mod_count>10</sys_mod_count>
+        <sys_name>f5AppHelper</sys_name>
         <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
         <sys_update_name>sys_script_include_ce020ad93741230040a1ae7873990e66</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-10-08 18:23:09</sys_updated_on>
+        <sys_updated_on>2018-10-17 14:33:16</sys_updated_on>
     </sys_script_include>
 </record_update>

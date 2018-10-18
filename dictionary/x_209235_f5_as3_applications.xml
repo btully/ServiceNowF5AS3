@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element label="applications" max_length="40" name="x_209235_f5_as3_applications" type="collection">
+        <element label="App Data" max_length="10000" name="app_data" type="string_full_utf8"/>
+        <element label="AS3 Definition" mandatory="true" max_length="10000" name="as3_definition" type="string_full_utf8"/>
+        <element label="Name" mandatory="true" max_length="40" name="name" type="string"/>
+        <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
+        <element label="Template" max_length="40" name="template" type="string"/>
+    </element>
+</database>

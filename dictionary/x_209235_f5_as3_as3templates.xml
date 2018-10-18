@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element label="as3Templates" max_length="40" name="x_209235_f5_as3_as3templates" type="collection">
+        <element label="Name" mandatory="true" max_length="40" name="name" type="string"/>
+        <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" read_only="true" type="string"/>
+        <element label="Template" mandatory="true" max_length="10000" name="template" type="string_full_utf8"/>
+        <element label="UI Specification" mandatory="true" max_length="10000" name="ui_specification" type="string_full_utf8"/>
+    </element>
+</database>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <database>
-    <element label="bigIpCluster" max_length="40" name="x_209235_f5_as3_bigipcluster" type="collection">
-        <element choice="1" label="Environment" max_length="40" name="environment" type="choice">
+    <element label="bigIpClusters" max_length="40" name="x_209235_f5_as3_bigipcluster" type="collection">
+        <element choice="1" label="Environment" mandatory="true" max_length="40" name="environment" type="choice">
             <choice/>
         </element>
-        <element label="Name" max_length="40" name="name" type="string"/>
+        <element label="Name" mandatory="true" max_length="40" name="name" type="string"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
     </element>
 </database>

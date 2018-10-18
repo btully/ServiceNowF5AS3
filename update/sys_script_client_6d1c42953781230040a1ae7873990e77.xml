@@ -11,29 +11,18 @@
         <name>Cluster - Get Environments</name>
         <order/>
         <script><![CDATA[function onLoad() {
-	try {
-		var ga = new GlideAjax('ajaxUtils');
-		ga.addParam('sysparm_name', 'getEnvironments');
-		ga.getXML(parseMessage);
-	}
-	catch(err){
-		jslog('An error occured: ' + err);
-	}
+	var ga = new GlideAjax('ajaxUtils');
+	ga.addParam('sysparm_name', 'getEnvironments');
+	ga.getXML(parseMessage);
 }
 
 function parseMessage(response) {
-	
-	try {
-		var data = JSON.parse(response.responseXML.documentElement.getAttribute('answer')).answer;
+	var data = JSON.parse(response.responseXML.documentElement.getAttribute('answer'));
 		
-		g_form.clearOptions('environment');
-		data.forEach(function (item) {
-			g_form.addOption('environment', item.number, item.name);
-		});
-	}
-	catch(err) {
-		jslog('An error occured 2: ' + err);
-	}
+	//g_form.clearOptions('environment');
+	data.forEach(function (item) {
+		g_form.addOption('environment', item.number, item.name);
+	});
 }
 ]]></script>
         <sys_class_name>sys_script_client</sys_class_name>
@@ -42,7 +31,7 @@ function parseMessage(response) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>6d1c42953781230040a1ae7873990e77</sys_id>
-        <sys_mod_count>36</sys_mod_count>
+        <sys_mod_count>43</sys_mod_count>
         <sys_name>Cluster - Get Environments</sys_name>
         <sys_overrides/>
         <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
@@ -50,7 +39,7 @@ function parseMessage(response) {
         <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
         <sys_update_name>sys_script_client_6d1c42953781230040a1ae7873990e77</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-10-08 23:11:16</sys_updated_on>
+        <sys_updated_on>2018-10-17 14:37:49</sys_updated_on>
         <table>x_209235_f5_as3_bigipcluster</table>
         <type>onLoad</type>
         <ui_type>10</ui_type>

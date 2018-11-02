@@ -2,9 +2,16 @@
 <database>
     <element label="applications" max_length="40" name="x_209235_f5_as3_applications" type="collection">
         <element label="App Data" max_length="10000" name="app_data" type="string_full_utf8"/>
-        <element label="AS3 Definition" mandatory="true" max_length="10000" name="as3_definition" type="string_full_utf8"/>
-        <element label="Name" mandatory="true" max_length="40" name="name" type="string"/>
-        <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
-        <element label="Template" max_length="40" name="template" type="string"/>
+        <element label="AS3 Declaration" max_length="10000" name="as3_declaration" type="string_full_utf8"/>
+        <element label="Business Unit" max_length="120" name="business_unit" type="string"/>
+        <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" read_only="true" type="string"/>
+        <element choice="3" default="pending" label="State" max_length="40" name="state" type="choice">
+            <choice>
+                <element label="Pending Approval" sequence="0" value="pending"/>
+                <element label="Approved" sequence="1" value="approved"/>
+                <element label="Deployed" sequence="2" value="deployed"/>
+                <element label="Rejected" sequence="3" value="rejected"/>
+            </choice>
+        </element>
     </element>
 </database>

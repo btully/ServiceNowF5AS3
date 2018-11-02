@@ -10,33 +10,33 @@
         <hint/>
         <homepage/>
         <image/>
-        <link_type>LIST</link_type>
+        <link_type>DIRECT</link_type>
         <map_page/>
-        <mobile_title>applications</mobile_title>
+        <mobile_title>Create New</mobile_title>
         <mobile_view_name>Mobile</mobile_view_name>
-        <name>x_209235_f5_as3_applications</name>
-        <order>851</order>
+        <name/>
+        <order>110</order>
         <override_menu_roles>false</override_menu_roles>
-        <query/>
+        <query>/x_209235_f5_as3_ApplicationDefinition.do</query>
         <report/>
-        <roles>x_209235_f5_as3.admin</roles>
+        <roles>x_209235_f5_as3.admin,x_209235_f5_as3.app_owner</roles>
         <sys_class_name>sys_app_module</sys_class_name>
         <sys_created_by>admin</sys_created_by>
-        <sys_created_on>2018-10-15 16:21:54</sys_created_on>
+        <sys_created_on>2018-11-02 17:03:09</sys_created_on>
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
-        <sys_id>184a69ab3701230040a1ae7873990e99</sys_id>
-        <sys_mod_count>5</sys_mod_count>
-        <sys_name>Applications</sys_name>
+        <sys_id>02ff5ad53761230040a1ae7873990e9c</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Create New</sys_name>
         <sys_overrides/>
         <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
         <sys_policy/>
         <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
-        <sys_update_name>sys_app_module_184a69ab3701230040a1ae7873990e99</sys_update_name>
+        <sys_update_name>sys_app_module_02ff5ad53761230040a1ae7873990e9c</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-11-02 17:07:38</sys_updated_on>
+        <sys_updated_on>2018-11-02 17:03:09</sys_updated_on>
         <timeline_page/>
-        <title>Applications</title>
+        <title>Create New</title>
         <uncancelable>false</uncancelable>
         <view_name/>
         <window_name/>

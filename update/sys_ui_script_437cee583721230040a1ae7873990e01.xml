@@ -1,0 +1,575 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ui_script">
+    <sys_ui_script action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <description/>
+        <global>false</global>
+        <name>x_209235_f5_as3.angularApp</name>
+        <script><![CDATA[var appListBaseUrl = "/x_209235_f5_as3_ApplicationList.do";
+var appDefBaseUrl = "/x_209235_f5_as3_ApplicationDefinition.do";
+
+var app = angular.module('as3App', []);
+
+app.directive('dynamic', function ($compile) {
+    return {
+      restrict: 'A',
+      replace: true,
+      link: function (scope, ele, attrs) {
+        scope.$watch(attrs.dynamic, function(html) {
+          ele.html(html);
+          $compile(ele.contents())(scope);
+        });
+      }
+    };
+});
+
+// Define Controller for managing AS3 Applications
+app.controller('AppListCtrl', ['$scope', '$location', '$window', function($scope, $location, $window) {
+    $scope.templates = snGetTemplates();
+    $scope.clusters = snGetClusters();
+	$scope.applications = snGetApplications();
+	
+    $scope.getClusterName = function(number){
+        return getName(number, $scope.clusters);
+    };
+    $scope.getTemplateName = function(number){
+        return getName(number, $scope.templates);
+    };
+    $scope.getAppDefUrl = function(appNum) {
+        return appDefBaseUrl + "#!?number=" + appNum;
+    };
+
+    $scope.createNew = function() {
+        $window.location.href = appDefBaseUrl;
+    };
+
+    function getName(number, objList) {
+        var name = "";
+        objList.forEach(function(obj) {
+            if(number === obj.number){
+                name = obj.name;
+            }
+        });
+        return name;
+    }
+}]);
+
+app.controller('AppDefCtrl', ['$scope', '$location', '$window', function($scope, $location, $window) {
+    // Initialize error tracking object
+    $scope.errors = {};
+
+    // Initalize form control object
+    $scope.formctl = {};
+    
+    // Get Data from ServiceNow via AJAX
+    $scope.clusters = snGetClusters();
+    $scope.templates = snGetTemplates();
+
+    // Check if URL contains number reference to ServiceNow record in application table
+    //   will return undefined if there is no 'number' URL query parameter
+    $scope.recNumber = $location.search().number
+
+    if($scope.recNumber){
+        // If recNumber is set send call to ServiceNow to retrieve application data
+        $scope.appData = snGetAppData($scope.recNumber);
+    } else {
+        // Initialize blank appData for a new appliction definition
+        $scope.appData = initAppData();
+    }
+
+    // Generate application form if template is selected
+    if ($scope.appData.template !== "none") {
+        genAppForm($scope.appData.template); 
+    }
+
+    $scope.templateOnChange = function(templateSelected) {
+        // Clear any previous input errors 
+        $scope.errors = {};
+
+        if (templateSelected === "none") {
+            $scope.activeUiSpec = null;
+            $scope.appFormHtml = "";
+        } else {
+            genAppForm(templateSelected);
+        }  
+    };
+
+    $scope.addListOfText = function(templateId, elementId) {
+        if (!(templateId in $scope.appData)) {
+            $scope.appData[templateId] = [];
+        }
+        
+        newVal = document.getElementById(elementId).value;
+        if (validateInput(templateId, newVal, "text")) {
+            $scope.appData[templateId].push(newVal);
+            document.getElementById(elementId).value = '';
+        }
+    };
+
+    $scope.removeListOfText = function(templateId, val) {
+        var arrayLength = $scope.appData[templateId].length;
+        for (var i = 0; i < arrayLength; i++) {
+            if ($scope.appData[templateId][i] === val ) {
+                $scope.appData[templateId].splice(i, 1);
+            }
+        }
+    };
+
+    $scope.appFormDelete = function() {
+		snDeleteApp($scope.recNumber);
+		
+		//Update App list to include new application
+		$scope.applications = snGetApplications();
+		$window.location.href = appListBaseUrl;
+    };
+	
+	$scope.appFormUpdate = function() {
+		snUpdateApp($scope.recNumber, $scope.appData);
+    };
+	
+	$scope.appFormCancel = function() {
+        $window.location.href = appListBaseUrl;
+    };
+    
+    $scope.appFormSubmit = function() {
+        var validForm = validateForm();
+
+        // Only run functions if the form data is valid and this is a new application
+        if (validForm) {
+            // Run input function if this an application create
+            if (!$scope.recNumber) {
+                runInputFunctions($scope.activeUiSpec);
+            }
+
+            // Send data to ServiceNow
+			snCreateApp($scope.appData);
+			
+			//Update App list to include new application
+			$scope.applications = snGetApplications();
+			
+            $window.location.href = appListBaseUrl;
+        }
+    };
+
+    function validateForm() {
+        var valid = true;
+
+        // Validate Application Name
+        var validator = {
+            "max-length": 128,
+            "min-length": 1,
+            "pattern": "^[a-zA-Z0-9_]*$",
+            "message": "Invalid Name.  Alphanumberic | - | _ characters only",
+            "required": true
+        }
+        if (!validateInput("name", $scope.appData.name, "text", validator)) {
+            valid = false;
+        }
+
+        // Validate BigIP Cluster
+        validator = {
+            "message": "Invalid Big-IP Cluster",
+            "required": true
+        }
+        if (!validateInput("dsc", $scope.appData.dsc, "choice", validator)) {
+            valid = false;
+        }
+       
+
+        // Validate Template
+        validator = {
+            "message": "Invalid Template",
+            "required": true
+        }
+        if(!validateInput("template", $scope.appData.template, "choice", validator)) {
+            valid = false;
+        }
+
+        // Validate Input from UI Spec 
+        if ($scope.activeUiSpec) {
+            $scope.activeUiSpec.sections.forEach(function(sect) {
+                sect.attributes.forEach(function(attr) {
+                    if(!validateInput(attr.templateId, $scope.appData[attr.templateId], attr.inputType)) {
+                        valid = false;
+                    }
+                });
+            });
+        }
+        if (!valid) {
+            $scope.errors.formInValid = true;
+        } else {
+            $scope.errors.formInValid = false;
+        }
+
+        return valid;
+    }
+    
+    function validateInput(templateId, value, type, validator=null) {
+        // If no validator passed to function check is there is one in UiSpec
+        if (validator === null && $scope.activeUiSpec) {
+            $scope.activeUiSpec.sections.forEach(function(sect) {
+                sect.attributes.forEach(function(attr) {
+                    if (attr.templateId === templateId && 'validate' in attr) {
+                        validator = attr.validate;
+                    }
+                });
+            });
+        }
+        
+        // Return true if there is no validator
+        if (!validator) {
+            return true;
+        }
+
+        var valid = true;
+        if ( value === undefined || value === "none" || value === "" || value === null ) {
+            if ("required" in validator) {
+                valid = false;
+            }
+        } else if (type === "text") {
+            if ("max-length" in validator){
+                if (value.length > validator.max-length){
+                    valid = false;
+                }
+            }
+            if ("min-length" in validator){
+                if (value.length < validator.min-length){
+                    valid = false;
+                }
+            } 
+            if ("pattern" in validator) {
+                regex = new RegExp(validator.pattern)
+                if (!value.match(regex)) {
+                    valid = false;
+                }
+            }
+        } else if (type === "listOfText") {
+            if ("required" in validator && value.length === 0) {
+                valid = false;
+            }
+        }
+
+        // handle form input error display 
+        var err_msg = null;
+        if (valid === false) {
+            if ("message" in validator) {
+                err_msg = validator.message;
+            } else {
+                err_msg = "Invalid " + templateId;
+            }
+        }
+        $scope.errors[templateId] = err_msg;
+
+        return valid;
+    }
+
+    function initAppData() {
+        // Build new appData structure if this is a new application (no ID)
+        var appData = {};
+        appData.name = "";
+        appData.busUnit = snGetUserBusUnit();
+        appData.dsc = "none";
+        appData.template = "none";
+        
+        return appData;
+    }
+
+    function getTmplUiSpec(templateNumber) {
+        var uiSpec = null;
+        $scope.templates.forEach(function(tmpl) {
+            if (templateNumber === tmpl.number) {
+                uiSpec = tmpl.ui_spec;
+            }
+        });
+        return uiSpec;
+    }
+
+    function setChoiceListOptions(uiSpec) {
+        var options = {};
+        uiSpec.sections.forEach(function(sect) {
+            sect.attributes.forEach(function(attr) {
+                if (attr.inputType === "choiceList") {
+                    options[attr.templateId] = attr.choices;
+                } 
+            });
+        });
+        return options
+    }
+
+    function setDefaultValues(uiSpec) {
+        uiSpec.sections.forEach(function(sect) {
+            sect.attributes.forEach(function(attr) {
+                if ('default' in attr) {
+                    $scope.appData[attr.templateId] = $scope.appData[attr.templateId] || attr.default;
+                } 
+            });
+        });
+    }
+
+    function genAppForm(templateId){
+        $scope.activeUiSpec = getTmplUiSpec(templateId);
+        $scope.formctl.options = setChoiceListOptions($scope.activeUiSpec);
+        setDefaultValues($scope.activeUiSpec);
+        $scope.appFormHtml = generateFormHTML($scope.activeUiSpec);
+    }
+
+    function runInputFunctions(uiSpec) {
+        uiSpec.sections.forEach(function(sect) {
+            sect.attributes.forEach(function(attr) {
+                // Single value attributes - default to empty string
+                if (attr.inputType === "function") {
+					$scope.appData[attr.templateId] = snRunCustomFunc(attr.functionName, $scope.appData);
+                    //$scope.appData[attr.templateId] = window[attr.functionName]($scope.appData);
+                } 
+            });
+        });
+    }
+
+    function generateFormHTML(uiSpec) {
+        var section_template = String.raw`
+        <div class="card">
+            <h5 class="card-header">{{{label}}}</h5>
+            <div class="card-body">
+                {{{attributes}}}
+            </div>
+        </div>
+        <br />
+        `;
+    
+        var text_input_template = String.raw`
+                <div class="form-group">
+                    <label for="{{{templateId}}}">{{{ label }}}</label>
+                    <input type="text" class="form-control" id="{{{templateId}}}" ng-model="appData.{{{templateId}}}">
+                
+                    <div class="alert alert-warning" role="alert" ng-if="errors.{{{templateId}}}">
+                        {{errors.{{{templateId}}}}}
+                    </div>
+                </div>
+        `;
+    
+        var choice_select_template = String.raw`
+                <div class="form-group">
+                <label for="{{{templateId}}}">{{{label}}}</label>
+                <select 
+                    class="form-control" 
+                    id="{{{templateId}}}" 
+                    ng-options="item for item in formctl.options.{{{templateId}}} track by item"
+                    ng-init="appData.{{{templateId}}} = appData.{{{templateId}}} || formctl.options.{{{templateId}}}[0]"
+                    ng-model="appData.{{{templateId}}}">
+                </select>
+                    <div class="alert alert-warning" role="alert" ng-if="errors.{{{templateId}}}">
+                        {{errors.{{{templateId}}}}}
+                    </div>
+                </div>
+        `;
+    
+        var function_template = String.raw`
+                <div class="form-group">
+                    <label for="{{{templateId}}}">{{{label}}}</label>
+                    <input type="text" class="form-control" id="{{{templateId}}}" 
+                    disabled placeholder="auto-generated on create" ng-model="appData.{{{templateId}}}">
+                </div>
+        `;
+    
+        var listOfText_template = String.raw`
+                <div class="form-group">
+                    <label for="{{{templateId}}}">{{{label}}}</label>
+                    <div class="form-row align-items-center">
+                        <div class="col-sm-3 my-1">
+                            <input type="text" class="form-control" id="{{{templateId}}}_entry">
+                        </div>
+    
+                        <div class="col-auto my-1">
+                            <button type="submit" class="btn btn-secondary btn-sm" ng-click='addListOfText("{{{templateId}}}", "{{{templateId}}}_entry")'>Add</button>
+                        </div>
+                    </div>
+                    <div class="alert alert-warning" role="alert" ng-if="errors.{{{templateId}}}">
+                        {{errors.{{{templateId}}}}}
+                    </div>
+                    <ul class="list-group col-sm-3 my-1">
+                        <li class="list-group-item" ng-repeat="val in appData.{{{templateId}}}" value="{{val}}">
+                            <span>{{val}}</span>
+                            <button class="btn btn-warning btn-sm" ng-click="removeListOfText('{{{templateId}}}', val)">Remove</button>
+                        </li>
+                    </ul>
+                </div>
+        `;
+    
+        var checkbox_template = String.raw`
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="{{{templateId}}}" ng-model="appData.{{{templateId}}}">
+                    <label class="form-check-label" for="{{{templateId}}}">{{{label}}}</label>
+                </div>
+        `;
+    
+        var form_html = "";
+        uiSpec.sections.forEach(function(sect) {
+            var sect_html = cleanTemplateTags(section_template);
+    
+            // Replace label field
+            var re = new RegExp("{{{label}}}", "g");
+            sect_html = sect_html.replace(re, sect.label);
+    
+            // Replace attributes field
+            var attr_html = "";
+            sect.attributes.forEach(function(attr) {
+                var html;
+                // Set attribute html template
+                if (attr.inputType === "text"){
+                    html = cleanTemplateTags(text_input_template);
+                } else if (attr.inputType === "choiceList"){
+                    html = cleanTemplateTags(choice_select_template);
+                } else if (attr.inputType === "function"){
+                    html = cleanTemplateTags(function_template);
+                } else if (attr.inputType === "listOfText"){
+                    html = cleanTemplateTags(listOfText_template);
+                } else if (attr.inputType === "checkbox"){
+                    html = cleanTemplateTags(checkbox_template);
+                }
+                
+                // Generate HTML from attribute spec
+                for (var property in attr) {
+                    if (attr.hasOwnProperty(property)) {
+                        var re = new RegExp("{{{" + property + "}}}", "g");
+                        html = html.replace(re, attr[property]);
+                    }
+                }
+    
+                // Append Attr HTML
+                attr_html = attr_html + html;
+            });
+            var re = new RegExp("{{{attributes}}}", "g");
+            sect_html = sect_html.replace(re, attr_html);
+            
+            form_html = form_html + sect_html
+        });
+    
+        return form_html;
+    }
+    
+    function cleanTemplateTags(template) {
+        // Remove whitespace within template tags
+        template = template.replace(/{{{\s+/g, '{{{');
+        template = template.replace(/\s+}}}/g, '}}}');
+        return template;
+    }
+
+}]);
+
+
+function snGetApplications() {
+	var data = [];
+    var ga = new GlideAjax('ajaxUtils');
+    ga.addParam('sysparm_name', 'getApplications');
+	ga.getXMLWait();
+	response = ga.getAnswer();
+	if (!response) {
+   		return;
+	}
+	data = JSON.parse(response);
+    return data;
+}
+
+function snGetTemplates() {
+	var data = [];
+    var ga = new GlideAjax('ajaxUtils');
+    ga.addParam('sysparm_name', 'getTemplates');
+	ga.getXMLWait();
+	response = ga.getAnswer();
+	if (!response) {
+   		return;
+	}
+	data = JSON.parse(response);
+    return data;
+}
+
+function snGetClusters() {
+	var data = [];
+    var ga = new GlideAjax('ajaxUtils');
+    ga.addParam('sysparm_name', 'getClusters');
+	ga.getXMLWait();
+	response = ga.getAnswer();
+	if (!response) {
+   		return;
+	}
+	data = JSON.parse(response);
+    return data;
+}
+
+function snGetAppData(number) {
+	var data = {};
+    var ga = new GlideAjax('ajaxUtils');
+    ga.addParam('sysparm_name', 'getAppData');
+	ga.addParam('number', number);
+	ga.getXMLWait();
+	response = ga.getAnswer();
+	if (!response) {
+   		return;
+	}
+	data = JSON.parse(response);
+    return data;
+}
+
+function snGetUserBusUnit() {
+    var ga = new GlideAjax('ajaxUtils');
+    ga.addParam('sysparm_name', 'getUserBusUnit');
+	ga.getXMLWait();
+	response = ga.getAnswer();
+	return response;
+}
+
+function snRunCustomFunc(funcName, appData){
+	console.log(funcName + " CALLED");
+	var ga = new GlideAjax('ajaxUtils');
+	ga.addParam('sysparm_name', 'runCustFunc');
+	ga.addParam('funcName', funcName);
+	ga.addParam('appData', JSON.stringify(appData));
+	ga.getXMLWait();
+	response = ga.getAnswer();
+	console.log("IPAM RESPONSE " + response);
+	return response;
+}
+
+function snCreateApp(appData){
+	var ga = new GlideAjax('ajaxUtils');
+	ga.addParam('sysparm_name', 'createApp');
+	ga.addParam('appData', JSON.stringify(appData));
+	ga.getXMLWait();
+	response = ga.getAnswer();
+	return response;
+}
+
+function snDeleteApp(number){
+	var ga = new GlideAjax('ajaxUtils');
+	ga.addParam('sysparm_name', 'deleteApp');
+	ga.addParam('number', number);
+	ga.getXMLWait();
+	response = ga.getAnswer();
+	return response;
+}
+
+function snUpdateApp(number, appData){
+	var ga = new GlideAjax('ajaxUtils');
+	ga.addParam('sysparm_name', 'updateApp');
+	ga.addParam('number', number);
+	ga.addParam('appData', JSON.stringify(appData));
+	ga.getXMLWait();
+	response = ga.getAnswer();
+	return response;
+}]]></script>
+        <script_name>angularApp</script_name>
+        <sys_class_name>sys_ui_script</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-10-30 15:26:24</sys_created_on>
+        <sys_id>437cee583721230040a1ae7873990e01</sys_id>
+        <sys_mod_count>72</sys_mod_count>
+        <sys_name>x_209235_f5_as3.angularApp</sys_name>
+        <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
+        <sys_update_name>sys_ui_script_437cee583721230040a1ae7873990e01</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-11-01 19:26:08</sys_updated_on>
+        <use_scoped_format>false</use_scoped_format>
+    </sys_ui_script>
+</record_update>

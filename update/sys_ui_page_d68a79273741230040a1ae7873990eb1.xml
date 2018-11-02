@@ -5,29 +5,89 @@
         <client_script/>
         <description>Angular application to manage application definitions</description>
         <direct>false</direct>
-        <endpoint>x_209235_f5_as3_Application Definition.do</endpoint>
+        <endpoint>x_209235_f5_as3_ApplicationDefinition.do</endpoint>
         <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
 <j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-	<script src="x_209235_f5_as3.angularAppDefinition.jsdbx"></script>
-	<div ng-app="as3App" ng-controller="AppDefCtrl">
-			<input type="text" ng-model="myVar" placeholder="Enter some text"></input> <br />
-			{{myVar}}
-	</div>
+	<link rel="stylesheet" 
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+            integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
+            crossorigin="anonymous"></link>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	<script src="x_209235_f5_as3.angularApp.jsdbx"></script>
+	
+	<div class="container" ng-app="as3App" ng-controller="AppDefCtrl">
+            <form>
+                <div class="card">
+                    <h5 class="card-header">General</h5>
+                    <div class="card-body">
+                
+                        <div class="form-group">
+                            <label for="name">Application Name</label>
+                            <input type="text" class="form-control" id="name" ng-model="appData.name" />
+                        
+                            <div class="alert alert-warning" role="alert" ng-if="errors.name">
+                                    {{errors.name}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="busUnit">Department</label>
+                            <input type="text" class="form-control" id="busUnit" ng-model="appData.busUnit" disabled="true" />
+                        </div>
+                        <div class="form-group">
+                            <label for="dsc">Big-IP Device Service Cluster</label>
+                            <select class="form-control" id="dsc" ng-model="appData.dsc"
+                                ng-init="appData.dsc = appData.dsc || 'none'">
+                                <option value="none">none</option>
+                                <option ng-repeat="c in clusters" value="{{ c.number }}">{{c.name}}</option>
+                            </select>
+                        
+                            <div class="alert alert-warning" role="alert" ng-if="errors.dsc">
+                                    {{errors.dsc}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="template">Template</label>
+                            <select class="form-control" 
+                                    id="template" 
+                                    ng-model="appData.template"
+                                    ng-init="appData.template = appData.template || 'none'"
+                                    ng-change="templateOnChange(appData.template)">
+                                    <option value="none">none</option>
+                                    <option ng-repeat="t in templates" value="{{ t.number }}">{{t.name}}</option>
+                            </select>
+                        
+                            <div class="alert alert-warning" role="alert" ng-if="errors.template">
+                                    {{errors.template}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div dynamic="appFormHtml"></div>
+                
+                <button type="submit" class="btn btn-primary" ng-click='appFormSubmit()' ng-if="!recNumber">Create</button>
+				<button type="submit" class="btn btn-primary" ng-click='appFormUpdate()' ng-if="recNumber">Save</button>
+				<button type="submit" class="btn btn-primary" ng-click='appFormDelete()' ng-if="recNumber">Delete</button>
+				<button type="cancel" class="btn btn-primary" ng-click='appFormCancel()'>Cancel</button>
+
+                <span class="alert alert-warning" role="alert" ng-if="errors.formInValid">Please fix the highlighted errors</span>
+            </form>
+		</div>
+	
 </j:jelly>]]></html>
-        <name>Application Definition</name>
+        <name>ApplicationDefinition</name>
         <processing_script/>
         <sys_class_name>sys_ui_page</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-10-15 17:43:00</sys_created_on>
         <sys_id>d68a79273741230040a1ae7873990eb1</sys_id>
-        <sys_mod_count>11</sys_mod_count>
-        <sys_name>Application Definition</sys_name>
+        <sys_mod_count>23</sys_mod_count>
+        <sys_name>ApplicationDefinition</sys_name>
         <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
         <sys_policy/>
         <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
         <sys_update_name>sys_ui_page_d68a79273741230040a1ae7873990eb1</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-10-15 18:59:48</sys_updated_on>
+        <sys_updated_on>2018-11-01 19:29:34</sys_updated_on>
     </sys_ui_page>
 </record_update>

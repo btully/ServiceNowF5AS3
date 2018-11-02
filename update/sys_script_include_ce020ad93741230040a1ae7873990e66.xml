@@ -13,20 +13,44 @@ f5AppHelper.prototype = {
 		this.clusterTable = 'x_209235_f5_as3_bigipcluster';
 		this.environmentTable = 'x_209235_f5_as3_environment';
 		this.applicationTable = 'x_209235_f5_as3_applications';
+		this.templateTable = 'x_209235_f5_as3_as3templates';
+		this.f5AdminRole = 'x_209235_f5_as3.admin';
+	},
+	getUserBusUnit: function() {
+		var gr = new GlideRecord('sys_user');
+		gr.get(gs.getUserID());
+		return gr.department.getDisplayValue();
+	},
+	getAppData: function(number) {
+		var gr = new GlideRecord(this.applicationTable);
+		gr.addQuery('number', number);
+		gr.query();
+		
+		var appData = {};
+		while (gr.next()) {
+			appData = JSON.parse(gr.getValue('app_data'));
+		}
+		//gs.info(appData);
+		return appData;
 	},
 	getApps: function() { 		
 		var gr = new GlideRecord(this.applicationTable);
+		
+		// If user is not an admin only show applications current department
+		var currentUser = gs.getUser(); 
+        if (!currentUser.hasRole(this.f5AdminRole)){
+			gr.addQuery('business_unit', this.getUserBusUnit());
+		}
 		gr.query();
 		
 		var appList = [];
 		while (gr.next()) {
 			appList.push({
-				name: gr.getValue('name'),
 				number: gr.getValue('number'),
+				appData: JSON.parse(gr.getValue('app_data')),
 				as3_definition: gr.getValue('as3_definition')
 			});
 		}
-		
 		return appList;
 	},
 	getClusters: function() { 	
@@ -35,7 +59,11 @@ f5AppHelper.prototype = {
 		
 		var clusterList = [];
 		while (gr.next()) {
-			clusterList.push({name: gr.getValue('name'), number: gr.getValue('number')});
+			clusterList.push({
+				name: gr.getValue('name'), 
+				number: gr.getValue('number'),
+				environment: gr.getValue('environment')
+			});
 		}
 		return clusterList;
 	},
@@ -45,9 +73,61 @@ f5AppHelper.prototype = {
 		
 		var envList = [];
 		while (gr.next()) {
-			envList.push({name: gr.getValue('name'), number: gr.getValue('number')});
+			envList.push({
+				name: gr.getValue('name'), 
+				number: gr.getValue('number')
+			});
 		}
 		return envList;
+	},
+	getTemplates: function() {
+		//gs.info("tmplList Called");
+		var gr = new GlideRecord(this.templateTable);
+		gr.query();
+		
+		var tmplList = [];
+		while (gr.next()) {
+			tmplList.push({
+				name: gr.getValue('name'),
+				number: gr.getValue('number'),
+				ui_spec: JSON.parse(gr.getValue('ui_specification')),
+				template: gr.getValue('template')
+			});
+		}
+		return tmplList;
+	},
+	getTemplate: function(number) {
+		var gr = new GlideRecord(this.templateTable);
+		gr.addQuery('number', number);
+		gr.query();
+		gr.next();
+		var template = gr.template;
+		// Clean Template Tags
+		template = template.replace(/{{\s+/g, '{{');
+		template = template.replace(/\s+}}/g, '}}');
+		return template;
+	},
+	createApp: function(appData) {
+		var gr = new GlideRecord(this.applicationTable);
+		gr.initialize();
+		gr.app_data = JSON.stringify(appData);
+		gr.business_unit = this.getUserBusUnit();
+		return gr.insert();
+	},
+	deleteApp: function(number) {
+		var gr = new GlideRecord(this.applicationTable);
+		gr.addQuery('number', number);
+		gr.query();
+		gr.next();
+		return gr.deleteRecord();
+	},
+	updateApp: function(number, appData) {
+		var gr = new GlideRecord(this.applicationTable);
+		gr.addQuery('number', number);
+		gr.query();
+		gr.next();
+		gr.app_data = JSON.stringify(appData);
+		return gr.update();
 	},
     type: 'f5AppHelper'
 };
@@ -56,13 +136,13 @@ f5AppHelper.prototype = {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-10-08 18:23:09</sys_created_on>
         <sys_id>ce020ad93741230040a1ae7873990e66</sys_id>
-        <sys_mod_count>10</sys_mod_count>
+        <sys_mod_count>58</sys_mod_count>
         <sys_name>f5AppHelper</sys_name>
         <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
         <sys_update_name>sys_script_include_ce020ad93741230040a1ae7873990e66</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-10-17 14:33:16</sys_updated_on>
+        <sys_updated_on>2018-11-02 20:34:10</sys_updated_on>
     </sys_script_include>
 </record_update>

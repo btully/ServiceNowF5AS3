@@ -8,6 +8,7 @@
         <description/>
         <name>ajaxUtils</name>
         <script><![CDATA[var f5App = new f5AppHelper();
+var custFuncs = new customFunctions();
 
 var ajaxUtils = Class.create();
 ajaxUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
@@ -17,8 +18,47 @@ ajaxUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 	getClusters: function() {
 		return JSON.stringify(f5App.getClusters());
 	},
-	getApplications:function() {
+	getApplications: function() {
 		return JSON.stringify(f5App.getApps());
+	},
+	getTemplates: function() {
+		return JSON.stringify(f5App.getTemplates());
+	},
+	getAppData: function() {
+		var number = this.getParameter('number');
+		return JSON.stringify(f5App.getAppData(number));
+	},
+	getUserBusUnit: function() {
+		return f5App.getUserBusUnit();
+	},
+	runCustFunc: function() {
+		var funcName = this.getParameter('funcName');
+		var appData = JSON.parse(this.getParameter('appData'));
+		
+		try {		
+			if (typeof custFuncs[funcName] === "function") { 
+				return custFuncs[funcName](appData);
+			} else {
+				gs.info("F5 App: Non-existent custom function called - " + this.getParameter('funcName'));
+				return "error";
+			}
+		}
+		catch(err){
+			gs.info("F5 App: Error ecountered running custom function " + funcName + err);
+		}
+	},
+	createApp: function() {
+		var appData = JSON.parse(this.getParameter('appData'));
+		return f5App.createApp(appData);
+	},
+	deleteApp: function() {
+		var number = this.getParameter('number');
+		return f5App.deleteApp(number);
+	},
+	updateApp: function() {
+		var number = this.getParameter('number');
+		var appData = JSON.parse(this.getParameter('appData'));
+		return f5App.updateApp(number, appData);
 	},
     type: 'ajaxUtils'
 });]]></script>
@@ -26,13 +66,13 @@ ajaxUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-10-08 19:42:57</sys_created_on>
         <sys_id>3a1192593781230040a1ae7873990e43</sys_id>
-        <sys_mod_count>32</sys_mod_count>
+        <sys_mod_count>70</sys_mod_count>
         <sys_name>ajaxUtils</sys_name>
         <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
         <sys_update_name>sys_script_include_3a1192593781230040a1ae7873990e43</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-10-17 14:36:38</sys_updated_on>
+        <sys_updated_on>2018-11-01 19:22:11</sys_updated_on>
     </sys_script_include>
 </record_update>

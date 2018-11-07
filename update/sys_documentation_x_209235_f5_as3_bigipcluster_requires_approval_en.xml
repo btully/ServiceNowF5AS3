@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update>
+    <sys_documentation element="requires_approval" label="Requires Approval" language="en" table="x_209235_f5_as3_bigipcluster">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>requires_approval</element>
+            <help/>
+            <hint/>
+            <label>Requires Approval</label>
+            <language>en</language>
+            <name>x_209235_f5_as3_bigipcluster</name>
+            <plural>Requires Approvals</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2018-11-07 16:20:31</sys_created_on>
+            <sys_id>dc86c80f3721230040a1ae7873990e6b</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Requires Approval</sys_name>
+            <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
+            <sys_update_name>sys_documentation_x_209235_f5_as3_bigipcluster_requires_approval_en</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2018-11-07 16:20:31</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

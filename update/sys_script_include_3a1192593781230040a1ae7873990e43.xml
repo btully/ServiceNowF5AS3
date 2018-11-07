@@ -31,6 +31,9 @@ ajaxUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 	getUserBusUnit: function() {
 		return f5App.getUserBusUnit();
 	},
+	getMidServers: function() {
+		return JSON.stringify(f5App.getMidServers());
+	},
 	runCustFunc: function() {
 		var funcName = this.getParameter('funcName');
 		var appData = JSON.parse(this.getParameter('appData'));
@@ -66,13 +69,13 @@ ajaxUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-10-08 19:42:57</sys_created_on>
         <sys_id>3a1192593781230040a1ae7873990e43</sys_id>
-        <sys_mod_count>70</sys_mod_count>
+        <sys_mod_count>74</sys_mod_count>
         <sys_name>ajaxUtils</sys_name>
         <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
         <sys_update_name>sys_script_include_3a1192593781230040a1ae7873990e43</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-11-01 19:22:11</sys_updated_on>
+        <sys_updated_on>2018-11-07 19:14:32</sys_updated_on>
     </sys_script_include>
 </record_update>

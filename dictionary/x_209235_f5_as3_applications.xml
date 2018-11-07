@@ -1,16 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <database>
     <element label="applications" max_length="40" name="x_209235_f5_as3_applications" type="collection">
+        <element label="API Response" max_length="2000" name="api_response" type="string_full_utf8"/>
         <element label="App Data" max_length="10000" name="app_data" type="string_full_utf8"/>
         <element label="AS3 Declaration" max_length="10000" name="as3_declaration" type="string_full_utf8"/>
         <element label="Business Unit" max_length="120" name="business_unit" type="string"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" read_only="true" type="string"/>
-        <element choice="3" default="pending" label="State" max_length="40" name="state" type="choice">
+        <element choice="3" default="none" label="Pending Action" max_length="40" name="pending_action" read_only="true" type="choice">
+            <choice>
+                <element label="None" sequence="0" value="none"/>
+                <element label="Create" sequence="1" value="create"/>
+                <element label="Update" sequence="2" value="update"/>
+                <element label="Delete" sequence="3" value="delete"/>
+            </choice>
+        </element>
+        <element choice="3" default="pending" label="Status" max_length="40" name="status" read_only="true" type="choice">
             <choice>
                 <element label="Pending Approval" sequence="0" value="pending"/>
                 <element label="Approved" sequence="1" value="approved"/>
-                <element label="Deployed" sequence="2" value="deployed"/>
-                <element label="Rejected" sequence="3" value="rejected"/>
+                <element label="Rejected" sequence="2" value="rejected"/>
+                <element label="Deployed" sequence="3" value="deployed"/>
+                <element label="Failed" sequence="4" value="failed"/>
             </choice>
         </element>
     </element>

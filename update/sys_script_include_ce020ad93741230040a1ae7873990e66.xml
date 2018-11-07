@@ -16,6 +16,18 @@ f5AppHelper.prototype = {
 		this.templateTable = 'x_209235_f5_as3_as3templates';
 		this.f5AdminRole = 'x_209235_f5_as3.admin';
 	},
+	getMidServers: function() {
+		var gr = new GlideRecord('ecc_agent');
+		gr.query();
+		
+		var midServList = [];
+		while (gr.next()) {
+			midServList.push({
+				name: gr.getValue('name'),
+			});
+		}
+		return midServList;
+	},
 	getUserBusUnit: function() {
 		var gr = new GlideRecord('sys_user');
 		gr.get(gs.getUserID());
@@ -53,6 +65,21 @@ f5AppHelper.prototype = {
 		}
 		return appList;
 	},
+	getCluster: function(number) {
+		var gr = new GlideRecord(this.clusterTable);
+		gr.addQuery('number', number);
+		gr.query();
+		
+		var clData = {};
+		while (gr.next()) {
+			clData.name = gr.getValue('name');
+			clData.number = gr.getValue('number');
+			clData.mid_server = gr.getValue('mid_server');
+			clData.requires_approval = gr.getValue('requires_approval');
+			clData.cluster_change_method = gr.getValue('cluster_change_method');
+		}
+		return clData;
+	},
 	getClusters: function() { 	
 		var gr = new GlideRecord(this.clusterTable);
 		gr.query();
@@ -62,7 +89,6 @@ f5AppHelper.prototype = {
 			clusterList.push({
 				name: gr.getValue('name'), 
 				number: gr.getValue('number'),
-				environment: gr.getValue('environment')
 			});
 		}
 		return clusterList;
@@ -136,13 +162,13 @@ f5AppHelper.prototype = {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-10-08 18:23:09</sys_created_on>
         <sys_id>ce020ad93741230040a1ae7873990e66</sys_id>
-        <sys_mod_count>58</sys_mod_count>
+        <sys_mod_count>65</sys_mod_count>
         <sys_name>f5AppHelper</sys_name>
         <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
         <sys_update_name>sys_script_include_ce020ad93741230040a1ae7873990e66</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-11-02 20:34:10</sys_updated_on>
+        <sys_updated_on>2018-11-07 21:58:56</sys_updated_on>
     </sys_script_include>
 </record_update>

@@ -8,7 +8,7 @@
         <field>cluster</field>
         <global>true</global>
         <messages/>
-        <name>BigIPDevice - Get Clusters</name>
+        <name>deviceLoadClusters</name>
         <order/>
         <script><![CDATA[function onLoad() {
 	var ga = new GlideAjax('ajaxUtils');
@@ -30,15 +30,15 @@ function parseMessage(response) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>603b0f2d3741230040a1ae7873990e5c</sys_id>
-        <sys_mod_count>3</sys_mod_count>
-        <sys_name>BigIPDevice - Get Clusters</sys_name>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>deviceLoadClusters</sys_name>
         <sys_overrides/>
         <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
         <sys_policy/>
         <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
         <sys_update_name>sys_script_client_603b0f2d3741230040a1ae7873990e5c</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-10-17 14:37:28</sys_updated_on>
+        <sys_updated_on>2018-11-07 19:19:20</sys_updated_on>
         <table>x_209235_f5_as3_bigipdevices</table>
         <type>onLoad</type>
         <ui_type>10</ui_type>

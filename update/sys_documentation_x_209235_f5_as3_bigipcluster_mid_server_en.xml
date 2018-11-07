@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <record_update>
-    <sys_documentation element="number" label="Number" language="en" table="x_209235_f5_as3_environment">
+    <sys_documentation element="mid_server" label="MID Server" language="en" table="x_209235_f5_as3_bigipcluster">
         <sys_documentation action="INSERT_OR_UPDATE">
-            <element>number</element>
+            <element>mid_server</element>
             <help/>
             <hint/>
-            <label>Number</label>
+            <label>MID Server</label>
             <language>en</language>
-            <name>x_209235_f5_as3_environment</name>
-            <plural>Numbers</plural>
+            <name>x_209235_f5_as3_bigipcluster</name>
+            <plural>MID Servers</plural>
             <sys_class_name>sys_documentation</sys_class_name>
             <sys_created_by>admin</sys_created_by>
-            <sys_created_on>2018-10-08 17:19:46</sys_created_on>
-            <sys_id>63547d953741230040a1ae7873990e82</sys_id>
+            <sys_created_on>2018-11-07 16:19:02</sys_created_on>
+            <sys_id>2a26840f3721230040a1ae7873990e3c</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_name>Number</sys_name>
+            <sys_name>MID Server</sys_name>
             <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
             <sys_policy/>
             <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
-            <sys_update_name>sys_documentation_x_209235_f5_as3_environment_number_en</sys_update_name>
+            <sys_update_name>sys_documentation_x_209235_f5_as3_bigipcluster_mid_server_en</sys_update_name>
             <sys_updated_by>admin</sys_updated_by>
-            <sys_updated_on>2018-10-08 17:19:46</sys_updated_on>
+            <sys_updated_on>2018-11-07 16:19:02</sys_updated_on>
             <url/>
             <url_target/>
         </sys_documentation>

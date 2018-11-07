@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <database>
     <element label="bigIpClusters" max_length="40" name="x_209235_f5_as3_bigipcluster" type="collection">
-        <element choice="1" label="Environment" mandatory="true" max_length="40" name="environment" type="choice">
+        <element choice="3" default="active_no_snyc" label="Cluster Change Method" max_length="40" name="cluster_change_method" type="choice">
+            <choice>
+                <element label="Active Only, No Sync" sequence="0" value="active_no_snyc"/>
+                <element label="Active Only, Sync to Group" sequence="1" value="active_sync"/>
+                <element label="Push All, No Sync" sequence="2" value="all_no_sync"/>
+            </choice>
+        </element>
+        <element choice="1" label="MID Server" mandatory="true" max_length="40" name="mid_server" type="choice">
             <choice/>
         </element>
         <element label="Name" mandatory="true" max_length="40" name="name" type="string"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" read_only="true" type="string"/>
+        <element label="Requires Approval" max_length="40" name="requires_approval" type="boolean"/>
     </element>
 </database>

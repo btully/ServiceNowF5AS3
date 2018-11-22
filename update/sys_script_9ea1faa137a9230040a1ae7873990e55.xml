@@ -7,13 +7,13 @@
         <action_insert>true</action_insert>
         <action_query>false</action_query>
         <action_update>true</action_update>
-        <active>true</active>
+        <active>false</active>
         <add_message>false</add_message>
         <advanced>true</advanced>
         <change_fields>false</change_fields>
         <client_callable>false</client_callable>
         <collection>x_209235_f5_as3_applications</collection>
-        <condition>current.status.changesTo("approved") &amp;&amp; current.pending_action !== "none"</condition>
+        <condition/>
         <description/>
         <execute_function>false</execute_function>
         <filter_condition/>
@@ -29,10 +29,51 @@
         <rest_variables/>
         <role_conditions/>
         <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
-	gs.info("PUSH AS32");
-// 	if (current.state.changesTo("approved") && current.pending_action !== "none") {
-// 		gs.info("PUSH AS3");
+	gs.info("BUS1 RULE AYSNC " + current.status + " " + current.pending_action);
+	
+	if (current.status == "approved" && current.pending_action != "none") {
+		var f5App = new f5AppHelper();
+		var appData = JSON.parse(current.app_data);
+		var cluster = f5App.getCluster(appData.dsc);
+		var deviceList = f5App.getDevicesByCluster(appData.dsc);
+
+
+		// Implement record modification once changes are complete 
+		var gr = new GlideRecord(f5App.applicationTable);
+		gr.addQuery('number', current.number);		
+		gr.query();
+		gr.next();
+
+		if (gr.pending_action == "create" || gr.pending_action == "update") {
+			gr.status = "deployed";
+			gr.pending_action = "none";
+			gr.update();
+		} else if (gr.pending_action == "delete") {
+			gr.deleteRecord();
+		}
+	}
+	
+// 	try {
+// 		var appData = JSON.parse(current.app_data);
+
+// 		var cluster = f5App.getCluster(appData.dsc);
+// 		var deviceList = f5App.getDevicesByCluster(appData.dsc);
+		
+// 		gs.info("THIS IS IT" + JSON.stringify(deviceList));
+		
+// 		if (current.pending_action == "delete") {
+// 			current.deleteRecord();
+// 		}
+		
+// 		// Update record actions
+// 		current.status = "deployed";
+// 		current.pending_action = "none";
+// 		//current.update();
+
+// 	} catch (err) {
+// 		gs.info("ERROR " + err);
 // 	}
+
 
 })(current, previous);]]></script>
         <sys_class_name>sys_script</sys_class_name>
@@ -41,7 +82,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>9ea1faa137a9230040a1ae7873990e55</sys_id>
-        <sys_mod_count>7</sys_mod_count>
+        <sys_mod_count>40</sys_mod_count>
         <sys_name>excuteAS3Api</sys_name>
         <sys_overrides/>
         <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
@@ -49,7 +90,7 @@
         <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
         <sys_update_name>sys_script_9ea1faa137a9230040a1ae7873990e55</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-11-07 22:37:22</sys_updated_on>
+        <sys_updated_on>2018-11-08 19:09:25</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

@@ -11,10 +11,11 @@
 f5AppHelper.prototype = {
     initialize: function() {
 		this.clusterTable = 'x_209235_f5_as3_bigipcluster';
-		this.environmentTable = 'x_209235_f5_as3_environment';
+		this.deviceTable = 'x_209235_f5_as3_bigipdevices';
 		this.applicationTable = 'x_209235_f5_as3_applications';
 		this.templateTable = 'x_209235_f5_as3_as3templates';
 		this.f5AdminRole = 'x_209235_f5_as3.admin';
+		this.AS3ChangeEvent = 'x_209235_f5_as3.AS3Change';
 	},
 	getMidServers: function() {
 		var gr = new GlideRecord('ecc_agent');
@@ -93,18 +94,24 @@ f5AppHelper.prototype = {
 		}
 		return clusterList;
 	},
-	getEnvironments: function() {
-		var gr = new GlideRecord(this.environmentTable);
+	getDevicesByCluster: function(clNumber) {
+		var gr = new GlideRecord(this.deviceTable);
+		gr.addQuery('cluster', clNumber);
 		gr.query();
 		
-		var envList = [];
+		var devList = [];
 		while (gr.next()) {
-			envList.push({
-				name: gr.getValue('name'), 
-				number: gr.getValue('number')
+			devList.push({
+				name: gr.getValue('name'),
+				number: gr.getValue('number'),
+				mgmt_ip: gr.getValue('management_ip'),
+				port: gr.getValue('port'),
+				username: gr.getValue('username'),
+				password: gr.password.getDecryptedValue(),
+				cluster: gr.getValue('cluster')
 			});
 		}
-		return envList;
+		return devList;
 	},
 	getTemplates: function() {
 		//gs.info("tmplList Called");
@@ -138,6 +145,7 @@ f5AppHelper.prototype = {
 		gr.initialize();
 		gr.app_data = JSON.stringify(appData);
 		gr.business_unit = this.getUserBusUnit();
+		gr.pending_action = "create";
 		return gr.insert();
 	},
 	deleteApp: function(number) {
@@ -145,7 +153,8 @@ f5AppHelper.prototype = {
 		gr.addQuery('number', number);
 		gr.query();
 		gr.next();
-		return gr.deleteRecord();
+		gr.pending_action = "delete";
+		return gr.update();
 	},
 	updateApp: function(number, appData) {
 		var gr = new GlideRecord(this.applicationTable);
@@ -153,6 +162,7 @@ f5AppHelper.prototype = {
 		gr.query();
 		gr.next();
 		gr.app_data = JSON.stringify(appData);
+		gr.pending_action = "update";
 		return gr.update();
 	},
     type: 'f5AppHelper'
@@ -162,13 +172,13 @@ f5AppHelper.prototype = {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-10-08 18:23:09</sys_created_on>
         <sys_id>ce020ad93741230040a1ae7873990e66</sys_id>
-        <sys_mod_count>65</sys_mod_count>
+        <sys_mod_count>70</sys_mod_count>
         <sys_name>f5AppHelper</sys_name>
         <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
         <sys_update_name>sys_script_include_ce020ad93741230040a1ae7873990e66</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-11-07 21:58:56</sys_updated_on>
+        <sys_updated_on>2018-11-08 19:46:08</sys_updated_on>
     </sys_script_include>
 </record_update>

@@ -3,7 +3,7 @@
     <sys_script action="INSERT_OR_UPDATE">
         <abort_action>false</abort_action>
         <access>package_private</access>
-        <action_delete>true</action_delete>
+        <action_delete>false</action_delete>
         <action_insert>true</action_insert>
         <action_query>false</action_query>
         <action_update>true</action_update>
@@ -13,7 +13,7 @@
         <change_fields>false</change_fields>
         <client_callable>false</client_callable>
         <collection>x_209235_f5_as3_applications</collection>
-        <condition/>
+        <condition>current.pending_action != "none"</condition>
         <description/>
         <execute_function>false</execute_function>
         <filter_condition/>
@@ -33,18 +33,17 @@
 	var appData = JSON.parse(current.app_data);
 	
 	// Process Record Operations
-	if (current.operation() === "insert") {
-		current.pending_action = "create";
+	if (current.pending_action == "create") {
 		appData.action = 'deploy';
-	} else if (current.operation() === "update") {
+	} else if (current.pending_action == "update") {
 		// Exit script if application data has not changed for Update operation
-		if (current.app_data === previous.app_data){ return; }
-		current.pending_action = "update";
+		if (current.app_data == previous.app_data){ return; }
 		appData.action = 'deploy';
-	} else if (current.operation() === "delete") {
-		current.pending_action = "delete";
+	} else if (current.pending_action == "delete") {
+		//gs.info("I hit delete condition");
 		appData.action = 'remove';
 	} else { 
+		//gs.info("I hit none condition");
 		current.pending_action = "none";
 		return; 
 	}
@@ -62,15 +61,20 @@
 		}
 	}
 	current.as3_declaration = template;
-	gs.info(template);
-
+	//gs.info(template);
 	
 	// Set status approval value based on cluster deploy method setting
 	var cluster = f5App.getCluster(appData.dsc);
-	if (cluster.requires_approval === "0") {
+	if (cluster.requires_approval == "0") {
 		current.status = "approved";
 	} else {
 		current.status = "pending";
+	}
+	
+	// Raise AS3 Change Event for API handler
+	if (current.status == "approved") {
+		//gs.eventQueue(f5App.AS3ChangeEvent, current, current.number, current.pending_action);
+		//gs.eventQueue('x_209235_f5_as3.AS3Change', current, current.number, current.pending_action);
 	}
 })(current, previous);]]></script>
         <sys_class_name>sys_script</sys_class_name>
@@ -79,7 +83,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>9e82300b37a1230040a1ae7873990ef1</sys_id>
-        <sys_mod_count>6</sys_mod_count>
+        <sys_mod_count>32</sys_mod_count>
         <sys_name>processAS3Change</sys_name>
         <sys_overrides/>
         <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
@@ -87,7 +91,7 @@
         <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
         <sys_update_name>sys_script_9e82300b37a1230040a1ae7873990ef1</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-11-07 22:21:07</sys_updated_on>
+        <sys_updated_on>2018-11-13 16:24:24</sys_updated_on>
         <template/>
         <when>before</when>
     </sys_script>

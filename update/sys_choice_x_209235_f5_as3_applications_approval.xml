@@ -1,78 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <record_update>
-    <sys_choice action="INSERT_OR_UPDATE" field="test_env" table="x_209235_f5_as3_bigipdevices" version="3">
+    <sys_choice action="INSERT_OR_UPDATE" field="approval" table="x_209235_f5_as3_applications" version="3">
         <sys_choice action="INSERT_OR_UPDATE">
             <dependent_value/>
-            <element>test_env</element>
+            <element>approval</element>
             <hint/>
             <inactive>false</inactive>
-            <label>Choice 1</label>
+            <label>Pending</label>
             <language>en</language>
-            <name>x_209235_f5_as3_bigipdevices</name>
+            <name>x_209235_f5_as3_applications</name>
             <sequence>0</sequence>
             <sys_created_by>admin</sys_created_by>
-            <sys_created_on>2018-10-08 18:17:39</sys_created_on>
+            <sys_created_on>2018-12-22 14:01:50</sys_created_on>
             <sys_domain>global</sys_domain>
             <sys_domain_path>/</sys_domain_path>
-            <sys_id>5f9186dd3741230040a1ae7873990eef</sys_id>
+            <sys_id>e7469f1ddbaa2300a29de04a4896196d</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_updated_by>admin</sys_updated_by>
-            <sys_updated_on>2018-10-08 18:17:39</sys_updated_on>
-            <value>Choice 1</value>
+            <sys_updated_on>2018-12-22 14:01:50</sys_updated_on>
+            <value>pending</value>
         </sys_choice>
         <sys_choice action="INSERT_OR_UPDATE">
             <dependent_value/>
-            <element>test_env</element>
+            <element>approval</element>
             <hint/>
             <inactive>false</inactive>
-            <label>Choice 2</label>
+            <label>Approved</label>
             <language>en</language>
-            <name>x_209235_f5_as3_bigipdevices</name>
+            <name>x_209235_f5_as3_applications</name>
             <sequence>1</sequence>
             <sys_created_by>admin</sys_created_by>
-            <sys_created_on>2018-10-08 18:17:39</sys_created_on>
+            <sys_created_on>2018-12-22 14:01:50</sys_created_on>
             <sys_domain>global</sys_domain>
             <sys_domain_path>/</sys_domain_path>
-            <sys_id>9f9186dd3741230040a1ae7873990ef0</sys_id>
+            <sys_id>6b469f1ddbaa2300a29de04a4896196e</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_updated_by>admin</sys_updated_by>
-            <sys_updated_on>2018-10-08 18:17:39</sys_updated_on>
-            <value>Choice 2</value>
+            <sys_updated_on>2018-12-22 14:01:50</sys_updated_on>
+            <value>approved</value>
         </sys_choice>
         <sys_choice action="INSERT_OR_UPDATE">
             <dependent_value/>
-            <element>test_env</element>
+            <element>approval</element>
             <hint/>
             <inactive>false</inactive>
-            <label>Choice 3</label>
+            <label>rejected</label>
             <language>en</language>
-            <name>x_209235_f5_as3_bigipdevices</name>
+            <name>x_209235_f5_as3_applications</name>
             <sequence>2</sequence>
             <sys_created_by>admin</sys_created_by>
-            <sys_created_on>2018-10-08 18:17:39</sys_created_on>
+            <sys_created_on>2018-12-22 14:01:50</sys_created_on>
             <sys_domain>global</sys_domain>
             <sys_domain_path>/</sys_domain_path>
-            <sys_id>9791c6dd3741230040a1ae7873990e3c</sys_id>
+            <sys_id>e7469f1ddbaa2300a29de04a4896196f</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_updated_by>admin</sys_updated_by>
-            <sys_updated_on>2018-10-08 18:17:39</sys_updated_on>
-            <value>Choice 3</value>
+            <sys_updated_on>2018-12-22 14:01:50</sys_updated_on>
+            <value>rejected</value>
         </sys_choice>
         <sys_choice_set action="INSERT_OR_UPDATE">
-            <element>test_env</element>
-            <name>x_209235_f5_as3_bigipdevices</name>
+            <element>approval</element>
+            <name>x_209235_f5_as3_applications</name>
             <sys_class_name>sys_choice_set</sys_class_name>
             <sys_created_by>admin</sys_created_by>
-            <sys_created_on>2018-10-08 18:17:39</sys_created_on>
-            <sys_id>9ea63db7db562300a29de04a4896193a</sys_id>
+            <sys_created_on>2018-12-22 14:01:50</sys_created_on>
+            <sys_id>27469f1ddbaa2300a29de04a4896196e</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_name>test_env</sys_name>
+            <sys_name>approval</sys_name>
             <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
             <sys_policy/>
             <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
-            <sys_update_name>sys_choice_x_209235_f5_as3_bigipdevices_test_env</sys_update_name>
+            <sys_update_name>sys_choice_x_209235_f5_as3_applications_approval</sys_update_name>
             <sys_updated_by>admin</sys_updated_by>
-            <sys_updated_on>2018-10-08 18:17:39</sys_updated_on>
+            <sys_updated_on>2018-12-22 14:01:50</sys_updated_on>
         </sys_choice_set>
     </sys_choice>
 </record_update>

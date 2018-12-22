@@ -99,6 +99,20 @@
             <sys_user/>
             <type/>
         </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>sync_group_name</element>
+            <position>7</position>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2018-12-22 19:07:59</sys_created_on>
+            <sys_id>8c6c9465db6e2300a29de04a48961960</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Big-IP Clusters" display_value="Big-IP Clusters" name="x_209235_f5_as3_bigipcluster" sys_domain="global" view="Default view">05b7484f3721230040a1ae7873990e75</sys_ui_section>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2018-12-22 19:07:59</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
         <sys_ui_section action="INSERT_OR_UPDATE">
             <caption>Big-IP Clusters</caption>
             <header>false</header>

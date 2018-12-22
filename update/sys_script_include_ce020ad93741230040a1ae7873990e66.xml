@@ -61,7 +61,8 @@ f5AppHelper.prototype = {
 			appList.push({
 				number: gr.getValue('number'),
 				appData: JSON.parse(gr.getValue('app_data')),
-				as3_definition: gr.getValue('as3_definition')
+				as3_definition: gr.getValue('as3_definition'),
+				approval: gr.getValue('approval')
 			});
 		}
 		return appList;
@@ -78,6 +79,7 @@ f5AppHelper.prototype = {
 			clData.mid_server = gr.getValue('mid_server');
 			clData.requires_approval = gr.getValue('requires_approval');
 			clData.cluster_change_method = gr.getValue('cluster_change_method');
+			clData.sync_group_name = gr.getValue('sync_group_name');
 		}
 		return clData;
 	},
@@ -90,6 +92,10 @@ f5AppHelper.prototype = {
 			clusterList.push({
 				name: gr.getValue('name'), 
 				number: gr.getValue('number'),
+				requires_approval: gr.getValue('requires_approval'),
+				mid_server: gr.getValue('mid_server'),
+				cluster_change_method: gr.getValue('cluster_change_method'),
+				sync_group_name: gr.getValue('sync_group_name')
 			});
 		}
 		return clusterList;
@@ -172,13 +178,13 @@ f5AppHelper.prototype = {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-10-08 18:23:09</sys_created_on>
         <sys_id>ce020ad93741230040a1ae7873990e66</sys_id>
-        <sys_mod_count>70</sys_mod_count>
+        <sys_mod_count>77</sys_mod_count>
         <sys_name>f5AppHelper</sys_name>
         <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
         <sys_update_name>sys_script_include_ce020ad93741230040a1ae7873990e66</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-11-08 19:46:08</sys_updated_on>
+        <sys_updated_on>2018-12-22 19:24:07</sys_updated_on>
     </sys_script_include>
 </record_update>

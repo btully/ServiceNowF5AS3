@@ -13,41 +13,47 @@
         <run_start>2018-11-07 17:06:56</run_start>
         <run_time>1970-01-01 08:00:00</run_time>
         <run_type>on_demand</run_type>
-        <script><![CDATA[var f5App = new f5AppHelper();
-var as3 = new AS3ApiUtils();
+        <script><![CDATA[gs.info("YO3!");
 
-var deviceList = [{				
-  mgmt_ip: "10.1.1.131",
-  port: "443",
-  username: "admin",
-  password: "admin"
-}];
+var f5App = new f5AppHelper();
+//var as3 = new AS3ApiUtils();
 
-var mid_server = "local_lab";
-var method = "get";
-var uri = "/mgmt/tm/cm/device/";
-var data = null;
+var clusters = f5App.getClusters();
 
-try {
-	var response = as3.getActiveDevice(deviceList, mid_server, method, uri, data);
-	gs.info(response.body.items[0].failoverState);
+gs.info(JSON.stringify(clusters));
+
+// var deviceList = [{				
+//   mgmt_ip: "10.1.1.131",
+//   port: "443",
+//   username: "admin",
+//   password: "admin"
+// }];
+
+// var mid_server = "local_lab";
+// var method = "get";
+// var uri = "/mgmt/tm/cm/device/";
+// var data = null;
+
+// try {
+// 	var response = as3.getActiveDevice(deviceList, mid_server, method, uri, data);
+// 	gs.info(response.body.items[0].failoverState);
 	
-} catch (err) {
-	gs.info("TEST SCRIPT ERROR " + err);
-}
+// } catch (err) {
+// 	gs.info("TEST SCRIPT ERROR " + err);
+// }
 ]]></script>
         <sys_class_name>sysauto_script</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-11-07 17:09:31</sys_created_on>
         <sys_id>4c2194073761230040a1ae7873990e95</sys_id>
-        <sys_mod_count>47</sys_mod_count>
+        <sys_mod_count>55</sys_mod_count>
         <sys_name>test_server_script</sys_name>
         <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
         <sys_policy/>
         <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
         <sys_update_name>sysauto_script_4c2194073761230040a1ae7873990e95</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-11-09 00:21:00</sys_updated_on>
+        <sys_updated_on>2018-12-22 13:35:35</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

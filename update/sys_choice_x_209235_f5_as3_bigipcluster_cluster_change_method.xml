@@ -15,10 +15,10 @@
             <sys_domain>global</sys_domain>
             <sys_domain_path>/</sys_domain_path>
             <sys_id>05b7884f3721230040a1ae7873990ee6</sys_id>
-            <sys_mod_count>2</sys_mod_count>
+            <sys_mod_count>3</sys_mod_count>
             <sys_updated_by>admin</sys_updated_by>
-            <sys_updated_on>2018-11-07 16:32:30</sys_updated_on>
-            <value>active_no_snyc</value>
+            <sys_updated_on>2018-12-22 20:06:34</sys_updated_on>
+            <value>active_no_sync</value>
         </sys_choice>
         <sys_choice action="INSERT_OR_UPDATE">
             <dependent_value/>
@@ -64,7 +64,7 @@
             <sys_class_name>sys_choice_set</sys_class_name>
             <sys_created_by>admin</sys_created_by>
             <sys_created_on>2018-11-07 16:25:46</sys_created_on>
-            <sys_id>41b7884f3721230040a1ae7873990ee7</sys_id>
+            <sys_id>56a63db7db562300a29de04a48961936</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_name>cluster_change_method</sys_name>
             <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>

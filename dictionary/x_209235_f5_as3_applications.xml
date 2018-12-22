@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <database>
     <element label="applications" max_length="40" name="x_209235_f5_as3_applications" type="collection">
-        <element label="API Response" max_length="2000" name="api_response" type="string_full_utf8"/>
+        <element label="API Response" max_length="10000" name="api_response" type="string_full_utf8"/>
+        <element choice="3" default="pending" label="Approval" max_length="40" name="approval" type="choice">
+            <choice>
+                <element label="Pending" sequence="0" value="pending"/>
+                <element label="Approved" sequence="1" value="approved"/>
+                <element label="rejected" sequence="2" value="rejected"/>
+            </choice>
+        </element>
         <element label="App Data" max_length="10000" name="app_data" type="string_full_utf8"/>
         <element label="AS3 Declaration" max_length="10000" name="as3_declaration" type="string_full_utf8"/>
-        <element label="Business Unit" max_length="120" name="business_unit" type="string"/>
+        <element label="Business Unit" max_length="120" name="business_unit" read_only="true" type="string"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" read_only="true" type="string"/>
         <element choice="3" default="none" label="Pending Action" max_length="40" name="pending_action" read_only="true" type="choice">
             <choice>
@@ -16,11 +23,9 @@
         </element>
         <element choice="3" default="pending" label="Status" max_length="40" name="status" read_only="true" type="choice">
             <choice>
-                <element label="Pending Approval" sequence="0" value="pending"/>
-                <element label="Approved" sequence="1" value="approved"/>
-                <element label="Rejected" sequence="2" value="rejected"/>
-                <element label="Deployed" sequence="3" value="deployed"/>
-                <element label="Failed" sequence="4" value="failed"/>
+                <element label="Pending" sequence="0" value="pending"/>
+                <element label="Deployed" sequence="1" value="deployed"/>
+                <element label="Failed" sequence="2" value="failed"/>
             </choice>
         </element>
     </element>

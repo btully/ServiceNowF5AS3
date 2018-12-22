@@ -9,6 +9,6 @@
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
         <element label="Password" mandatory="true" max_length="255" name="password" type="password2"/>
         <element default="443" label="Port" max_length="40" name="port" type="integer"/>
-        <element label="Username" max_length="40" name="username" type="string"/>
+        <element label="Username" mandatory="true" max_length="40" name="username" type="string"/>
     </element>
 </database>

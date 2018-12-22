@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update>
+    <sys_documentation element="sync_group_name" label="Sync Group Name" language="en" table="x_209235_f5_as3_bigipcluster">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>sync_group_name</element>
+            <help/>
+            <hint/>
+            <label>Sync Group Name</label>
+            <language>en</language>
+            <name>x_209235_f5_as3_bigipcluster</name>
+            <plural>Sync Group Names</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2018-12-22 19:07:59</sys_created_on>
+            <sys_id>446cd8a5db6e2300a29de04a489619d3</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Sync Group Name</sys_name>
+            <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
+            <sys_update_name>sys_documentation_x_209235_f5_as3_bigipcluster_sync_group_name_en</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2018-12-22 19:07:59</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

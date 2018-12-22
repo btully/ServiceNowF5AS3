@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <record_update>
-    <sys_dictionary action="INSERT_OR_UPDATE" element="api_response" table="x_209235_f5_as3_applications">
+    <sys_dictionary action="INSERT_OR_UPDATE" element="approval" table="x_209235_f5_as3_applications">
         <active>true</active>
         <array>false</array>
         <array_denormalized>false</array_denormalized>
@@ -12,13 +12,13 @@
 	return '';  // return the calculated value
 
 })(current);]]></calculation>
-        <choice/>
+        <choice>3</choice>
         <choice_field/>
         <choice_table/>
-        <column_label>API Response</column_label>
+        <column_label>Approval</column_label>
         <comments/>
         <create_roles/>
-        <default_value/>
+        <default_value>pending</default_value>
         <defaultsort/>
         <delete_roles/>
         <dependent/>
@@ -28,14 +28,14 @@
         <dynamic_creation_script/>
         <dynamic_default_value/>
         <dynamic_ref_qual/>
-        <element>api_response</element>
+        <element>approval</element>
         <element_reference>false</element_reference>
         <foreign_database/>
         <function_definition/>
         <function_field>false</function_field>
-        <internal_type display_value="">string_full_utf8</internal_type>
+        <internal_type display_value="Choice">choice</internal_type>
         <mandatory>false</mandatory>
-        <max_length>10000</max_length>
+        <max_length>40</max_length>
         <name>x_209235_f5_as3_applications</name>
         <next_element/>
         <primary>false</primary>
@@ -53,16 +53,16 @@
         <staged>false</staged>
         <sys_class_name>sys_dictionary</sys_class_name>
         <sys_created_by>admin</sys_created_by>
-        <sys_created_on>2018-11-07 19:38:52</sys_created_on>
-        <sys_id>95a6b9b7db562300a29de04a48961992</sys_id>
-        <sys_mod_count>1</sys_mod_count>
-        <sys_name>API Response</sys_name>
+        <sys_created_on>2018-12-22 14:00:17</sys_created_on>
+        <sys_id>74d51399dbaa2300a29de04a489619c9</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>Approval</sys_name>
         <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
         <sys_policy/>
         <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
-        <sys_update_name>sys_dictionary_x_209235_f5_as3_applications_api_response</sys_update_name>
+        <sys_update_name>sys_dictionary_x_209235_f5_as3_applications_approval</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-12-21 17:33:53</sys_updated_on>
+        <sys_updated_on>2018-12-22 14:01:51</sys_updated_on>
         <table_reference>false</table_reference>
         <text_index>false</text_index>
         <unique>false</unique>

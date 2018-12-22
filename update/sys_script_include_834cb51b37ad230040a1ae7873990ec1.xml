@@ -16,9 +16,12 @@ AS3ApiUtils.prototype = {
 		var uri = "/mgmt/tm/cm/device/";
 		
 		for (var i = 0; i < deviceList.length; i++) {
-			response = execRestCall(deviceList[i], mid_server, method, uri, null);
-			if (response.body.items[0].failoverState == "active"){
-				return deviceList[i];
+			var response = execRestCall(deviceList[i], mid_server, method, uri, null);
+			for (var j = 0; j < response.body.items.length; j++) {
+				var item = response.body.items[j];
+				if (item.selfDevice == "true" && item.failoverState == "active") { 
+					return deviceList[i]; 
+				}
 			}
 		}
 		return null;
@@ -33,6 +36,14 @@ AS3ApiUtils.prototype = {
 		
 		return execRestCall(device, mid_server, method, uri, as3Dec);
 	},
+	configSync: function(device, mid_server, syncGroup) {
+		var method = 'post';
+		var uri = "/mgmt/tm/cm";
+		var data = {command:"run", utilCmdArgs:"config-sync to-group " + syncGroup};
+		gs.info("CONFIG SYNC");
+		
+		return execRestCall(device, mid_server, method, uri, data);
+	},
     type: 'AS3ApiUtils'
 };
 
@@ -43,7 +54,7 @@ function execRestCall(device, mid_server, method, uri, data) {
 	restMessage.setMIDServer(mid_server);
 	restMessage.setHttpMethod(method);
 	if (data){
-		restMessage.setRequestBody(data);
+		restMessage.setRequestBody(JSON.stringify(data));
 	}
 
 	var response = restMessage.execute();
@@ -56,7 +67,7 @@ function execRestCall(device, mid_server, method, uri, data) {
 		responseBody = response.getBody();
 	}
 
-	//gs.info("REQ BODY: " + restMessage.getRequestBody());
+	gs.info("REQ BODY: " + restMessage.getRequestBody());
 	gs.info("RESPONSE ERROR: " + responseError);
 	gs.info("RESPONSE STATUS: " + status);
 	gs.info("RESPONSE BODY: " + responseBody);
@@ -67,13 +78,13 @@ function execRestCall(device, mid_server, method, uri, data) {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-11-08 19:55:46</sys_created_on>
         <sys_id>834cb51b37ad230040a1ae7873990ec1</sys_id>
-        <sys_mod_count>12</sys_mod_count>
+        <sys_mod_count>25</sys_mod_count>
         <sys_name>AS3ApiUtils</sys_name>
         <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
         <sys_update_name>sys_script_include_834cb51b37ad230040a1ae7873990ec1</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-11-09 02:41:19</sys_updated_on>
+        <sys_updated_on>2018-12-22 21:17:57</sys_updated_on>
     </sys_script_include>
 </record_update>

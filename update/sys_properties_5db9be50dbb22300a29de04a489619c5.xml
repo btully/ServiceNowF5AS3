@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_properties">
+    <sys_properties action="INSERT_OR_UPDATE">
+        <choices/>
+        <description>F5 Administrator Email Alias</description>
+        <ignore_cache>false</ignore_cache>
+        <is_private>false</is_private>
+        <name>x_209235_f5_as3.adminEmailAlias</name>
+        <read_roles>x_209235_f5_as3.admin</read_roles>
+        <suffix>adminEmailAlias</suffix>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-12-31 19:39:57</sys_created_on>
+        <sys_id>5db9be50dbb22300a29de04a489619c5</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>x_209235_f5_as3.adminEmailAlias</sys_name>
+        <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
+        <sys_update_name>sys_properties_5db9be50dbb22300a29de04a489619c5</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-12-31 19:47:07</sys_updated_on>
+        <type>string</type>
+        <value>b.tully@f5.com</value>
+        <write_roles>x_209235_f5_as3.admin</write_roles>
+    </sys_properties>
+    <sys_translated_text action="delete_multiple" query="documentkey=5db9be50dbb22300a29de04a489619c5"/>
+</record_update>

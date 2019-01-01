@@ -25,9 +25,11 @@ app.directive('dynamic', function ($compile) {
 
 // Define Controller for managing AS3 Applications
 app.controller('AppListCtrl', ['$scope', '$location', '$window', function($scope, $location, $window) {
+	$scope.loaded = false;
     $scope.templates = snGetTemplates();
     $scope.clusters = snGetClusters();
 	$scope.applications = snGetApplications();
+	$scope.loaded = true;
 	
     $scope.getClusterName = function(number){
         return getName(number, $scope.clusters);
@@ -42,6 +44,22 @@ app.controller('AppListCtrl', ['$scope', '$location', '$window', function($scope
     $scope.createNew = function() {
         $window.location.href = appDefBaseUrl;
     };
+	
+	$scope.deleteSelected = function() {
+		var itemDeleted = false;
+		for (var i = 0; i < $scope.applications.length; i++) { 
+			if ($scope.applications[i].deleteSelected) {
+				snDeleteApp($scope.applications[i].number);
+				itemDeleted = true;
+			}
+		}
+		if (itemDeleted) {
+			$scope.loaded = false;
+			$scope.applications = snGetApplications();
+			$scope.loaded = true;
+			$scope.$apply();
+		}
+	};
 
     function getName(number, objList) {
         var name = "";
@@ -55,7 +73,8 @@ app.controller('AppListCtrl', ['$scope', '$location', '$window', function($scope
 }]);
 
 app.controller('AppDefCtrl', ['$scope', '$location', '$window', function($scope, $location, $window) {
-    // Initialize error tracking object
+    $scope.loaded = false;
+	// Initialize error tracking object
     $scope.errors = {};
 
     // Initalize form control object
@@ -81,6 +100,7 @@ app.controller('AppDefCtrl', ['$scope', '$location', '$window', function($scope,
     if ($scope.appData.template !== "none") {
         genAppForm($scope.appData.template); 
     }
+	$scope.loaded = true;
 
     $scope.templateOnChange = function(templateSelected) {
         // Clear any previous input errors 
@@ -125,6 +145,7 @@ app.controller('AppDefCtrl', ['$scope', '$location', '$window', function($scope,
 	
 	$scope.appFormUpdate = function() {
 		snUpdateApp($scope.recNumber, $scope.appData);
+		$window.location.href = appListBaseUrl;
     };
 	
 	$scope.appFormCancel = function() {
@@ -386,12 +407,14 @@ app.controller('AppDefCtrl', ['$scope', '$location', '$window', function($scope,
                     <div class="alert alert-warning" role="alert" ng-if="errors.{{{templateId}}}">
                         {{errors.{{{templateId}}}}}
                     </div>
-                    <ul class="list-group col-sm-3 my-1">
-                        <li class="list-group-item" ng-repeat="val in appData.{{{templateId}}}" value="{{val}}">
+					<div>
+                    <ul class="list-group my-1">
+                        <li class="list-group-item d-flex justify-content-between align-items-center col-sm-3" ng-repeat="val in appData.{{{templateId}}}" value="{{val}}">
                             <span>{{val}}</span>
                             <button class="btn btn-warning btn-sm" ng-click="removeListOfText('{{{templateId}}}', val)">Remove</button>
                         </li>
                     </ul>
+					</div>
                 </div>
         `;
     
@@ -562,14 +585,14 @@ function snUpdateApp(number, appData){
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-10-30 15:26:24</sys_created_on>
         <sys_id>437cee583721230040a1ae7873990e01</sys_id>
-        <sys_mod_count>72</sys_mod_count>
+        <sys_mod_count>100</sys_mod_count>
         <sys_name>x_209235_f5_as3.angularApp</sys_name>
         <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
         <sys_policy/>
         <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
         <sys_update_name>sys_ui_script_437cee583721230040a1ae7873990e01</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-11-01 19:26:08</sys_updated_on>
+        <sys_updated_on>2018-12-28 20:39:43</sys_updated_on>
         <use_scoped_format>false</use_scoped_format>
     </sys_ui_script>
 </record_update>

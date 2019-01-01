@@ -14,28 +14,71 @@
             crossorigin="anonymous"></link>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 	<script src="x_209235_f5_as3.angularApp.jsdbx"></script>
-	    <div class="container" ng-app="as3App" ng-controller="AppListCtrl">
+	<style>
+		.btn {
+			margin-left: 5px;
+			margin-right: 5px;
+		}
+		.loader {
+		  border: 16px solid #f3f3f3;
+		  border-radius: 50%;
+		  border-top: 16px solid #3498db;
+		  width: 120px;
+		  height: 120px;
+		  -webkit-animation: spin 2s linear infinite; /* Safari */
+		  animation: spin 2s linear infinite;
+		  margin: auto;
+
+		}
+
+		/* Safari */
+		@-webkit-keyframes spin {
+		  0% { -webkit-transform: rotate(0deg); }
+		  100% { -webkit-transform: rotate(360deg); }
+		}
+
+		@keyframes spin {
+		  0% { transform: rotate(0deg); }
+		  100% { transform: rotate(360deg); }
+		}
+		[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+		  display: none !important;
+		}
+	</style>
+	<div class="container" ng-app="as3App" ng-controller="AppListCtrl">
+		<div class="ng-cloak">
 			<h3>F5 Application List</h3>
 			<table class="table table-striped">
-                <thead>
-                    <tr>
-                    <th scope="col">Number</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Template</th>
-                    <th scope="col">Cluster</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="a in applications">
-                        <th scope="row"><a href="{{getAppDefUrl(a.number)}}">{{a.number}}</a></th>
-                        <td>{{a.appData.name}}</td>
-                        <td>{{getTemplateName(a.appData.template)}}</td>
-                        <td>{{getClusterName(a.appData.dsc)}}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <button type="submit" class="btn btn-primary" ng-click='createNew()'>Create New</button>
+				<thead>
+					<tr>
+						<th scope="col" width="5%"></th>
+						<th scope="col" width="10%">Number</th>
+						<th scope="col" width="25%">Name</th>
+						<th scope="col" width="15%">Template</th>
+						<th scope="col" width="15%">Cluster</th>
+						<th scope="col" width="10%">Status</th>
+						<th scope="col" width="10%">Pending Action</th>
+						<th scope="col" width="10%">Approval</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="a in applications">
+						<th scope="row"><input type="checkbox" ng-model="a.deleteSelected" /></th>
+						<td><b><a href="{{getAppDefUrl(a.number)}}">{{a.number}}</a></b></td>
+						<td>{{a.appData.name}}</td>
+						<td>{{getTemplateName(a.appData.template)}}</td>
+						<td>{{getClusterName(a.appData.dsc)}}</td>
+						<td>{{a.status}}</td>
+						<td>{{a.pending_action}}</td>
+						<td>{{a.approval}}</td>
+					</tr>
+				</tbody>
+			</table>
+			<button type="submit" class="btn btn-primary" ng-click='deleteSelected()'>Delete</button>
+			<button type="submit" class="btn btn-primary" ng-click='createNew()'>Create New</button>
 		</div>
+		<div class="loader" ng-hide="loaded"></div>
+	</div>
 
 </j:jelly>]]></html>
         <name>ApplicationList</name>
@@ -44,13 +87,13 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-10-26 17:05:19</sys_created_on>
         <sys_id>428d524f3711230040a1ae7873990e79</sys_id>
-        <sys_mod_count>5</sys_mod_count>
+        <sys_mod_count>33</sys_mod_count>
         <sys_name>ApplicationList</sys_name>
         <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
         <sys_policy/>
         <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
         <sys_update_name>sys_ui_page_428d524f3711230040a1ae7873990e79</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-10-30 18:05:49</sys_updated_on>
+        <sys_updated_on>2018-12-28 19:56:36</sys_updated_on>
     </sys_ui_page>
 </record_update>

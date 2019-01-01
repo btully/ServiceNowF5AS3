@@ -14,8 +14,44 @@
             crossorigin="anonymous"></link>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 	<script src="x_209235_f5_as3.angularApp.jsdbx"></script>
+	<style>
+		.btn {
+			margin-left: 2px;
+			margin-right: 2px;
+		}
+		.form-check-label {
+			margin-bottom: 0;
+			margin-left: 15px;
+		}
+		.loader {
+		  border: 16px solid #f3f3f3;
+		  border-radius: 50%;
+		  border-top: 16px solid #3498db;
+		  width: 120px;
+		  height: 120px;
+		  -webkit-animation: spin 2s linear infinite; /* Safari */
+		  animation: spin 2s linear infinite;
+		  margin: auto;
+
+		}
+
+		/* Safari */
+		@-webkit-keyframes spin {
+		  0% { -webkit-transform: rotate(0deg); }
+		  100% { -webkit-transform: rotate(360deg); }
+		}
+
+		@keyframes spin {
+		  0% { transform: rotate(0deg); }
+		  100% { transform: rotate(360deg); }
+		}
+		[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+		  display: none !important;
+		}
+	</style>
 	
 	<div class="container" ng-app="as3App" ng-controller="AppDefCtrl">
+		<div class="ng-cloak">
             <form>
                 <div class="card">
                     <h5 class="card-header">General</h5>
@@ -73,6 +109,8 @@
                 <span class="alert alert-warning" role="alert" ng-if="errors.formInValid">Please fix the highlighted errors</span>
             </form>
 		</div>
+		<div class="loader" ng-hide="loaded"></div>
+	</div>
 	
 </j:jelly>]]></html>
         <name>ApplicationDefinition</name>
@@ -81,13 +119,13 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-10-15 17:43:00</sys_created_on>
         <sys_id>d68a79273741230040a1ae7873990eb1</sys_id>
-        <sys_mod_count>23</sys_mod_count>
+        <sys_mod_count>27</sys_mod_count>
         <sys_name>ApplicationDefinition</sys_name>
         <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
         <sys_policy/>
         <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
         <sys_update_name>sys_ui_page_d68a79273741230040a1ae7873990eb1</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-11-01 19:29:34</sys_updated_on>
+        <sys_updated_on>2018-12-28 17:42:25</sys_updated_on>
     </sys_ui_page>
 </record_update>

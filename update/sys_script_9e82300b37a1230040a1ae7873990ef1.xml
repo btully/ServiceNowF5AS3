@@ -41,9 +41,9 @@
 		!( current.app_data.changes() || 
 		  current.pending_action.changesFrom("none") ||
 		  current.approval.changesTo("approved") )
-	   ) { gs.info("UpDATE CALLED BUT RETURND "); return; }
+	   ) { gs.info("processAS3Change CALLED BUT RETURNED "); return; }
 	
-	gs.info("UpDATE CALLED " + current.operation());
+	gs.info("processAS3Change CALLED " + current.operation());
 	// Process Record Operations
 	if (operation == "insert") {
 		current.pending_action = "create";
@@ -111,17 +111,19 @@
 		return;
 	}
 	
-	// Set approval value based on cluster deploy method setting
+	// Set approval value based on cluster deploy method setting and raise admin email
+	//  notification event 
 	var cluster = f5App.getCluster(appData.dsc);
-	if (cluster.requires_approval == "1" && current.approval != "approved") {
+	if (cluster.requires_approval == "1" && current.approval != "approved" && operation != "delete") {
 		current.approval = "pending";
+		gs.eventQueue(f5App.approvalNotifyEvent, current, f5App.getAdminEmail(), null);
 	} else {
 		current.approval = "approved";
 	}
 	
 	// Raise AS3 Change Event for API handler
-	if (((operation == "update" || operation == "insert") && current.approval == "approved")
-		|| operation == "delete" ) {
+	if (((operation == "update" || operation == "insert") && current.getValue('approval') == "approved")
+		|| (operation == "delete" &&  current.getValue('status') == 'deployed')) {
 		var data = JSON.stringify({
 			app_data: JSON.parse(current.getValue('app_data')),
 			as3_declaration: JSON.parse(current.getValue('as3_declaration')),
@@ -137,7 +139,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>9e82300b37a1230040a1ae7873990ef1</sys_id>
-        <sys_mod_count>69</sys_mod_count>
+        <sys_mod_count>79</sys_mod_count>
         <sys_name>processAS3Change</sys_name>
         <sys_overrides/>
         <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
@@ -145,7 +147,7 @@
         <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
         <sys_update_name>sys_script_9e82300b37a1230040a1ae7873990ef1</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-12-22 18:13:23</sys_updated_on>
+        <sys_updated_on>2018-12-31 20:39:56</sys_updated_on>
         <template/>
         <when>before</when>
     </sys_script>

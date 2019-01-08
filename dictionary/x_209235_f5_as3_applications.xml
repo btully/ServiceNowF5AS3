@@ -6,7 +6,7 @@
             <choice>
                 <element label="Pending" sequence="0" value="pending"/>
                 <element label="Approved" sequence="1" value="approved"/>
-                <element label="rejected" sequence="2" value="rejected"/>
+                <element label="Rejected" sequence="2" value="rejected"/>
             </choice>
         </element>
         <element label="App Data" max_length="10000" name="app_data" type="string_full_utf8"/>

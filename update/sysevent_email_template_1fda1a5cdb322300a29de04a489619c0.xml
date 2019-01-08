@@ -5,13 +5,13 @@
         <email_layout/>
         <message/>
         <message_html><![CDATA[<p>Hello F5 Administrator,</p>
-<p>Please log into ServiceNow and review the follow F5 application change.&nbsp;Click here to view application: ${URI}</p>
+<p>Please log into ServiceNow and review the following F5 application change.&nbsp;Click here to view application: ${URI}</p>
 <p><span style="text-decoration: underline;"><strong>Number:</strong></span> ${number}</p>
 <p><span style="text-decoration: underline;"><strong>Updated by:</strong></span> ${sys_updated_by}<span style="text-decoration: underline;"><strong><br /></strong></span></p>
 <p><span style="text-decoration: underline;"><strong>Business Unit:</strong></span>&nbsp;${business_unit}</p>
 <p><span style="text-decoration: underline;"><strong>Data:</strong></span></p>
 <p>${app_data}</p>
-<p><span style="text-decoration: underline;"><strong>AS3 Declaration:</strong></span></p>
+<p><span style="text-decoration: underline;"><strong>AS3 Service Definition:</strong></span></p>
 <p>${as3_declaration}</p>
 <p>Regards,</p>
 <p>F5Networks</p>]]></message_html>
@@ -24,14 +24,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-12-31 17:35:16</sys_created_on>
         <sys_id>1fda1a5cdb322300a29de04a489619c0</sys_id>
-        <sys_mod_count>3</sys_mod_count>
+        <sys_mod_count>4</sys_mod_count>
         <sys_name>F5 Application Approval</sys_name>
         <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
         <sys_policy/>
         <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
         <sys_update_name>sysevent_email_template_1fda1a5cdb322300a29de04a489619c0</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-12-31 19:18:59</sys_updated_on>
+        <sys_updated_on>2019-01-08 20:42:55</sys_updated_on>
         <sys_version>2</sys_version>
     </sysevent_email_template>
 </record_update>

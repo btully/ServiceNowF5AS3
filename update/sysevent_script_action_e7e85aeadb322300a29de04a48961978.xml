@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update sys_domain="global" table="sysevent_script_action">
+    <sysevent_script_action action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <condition_script/>
+        <description/>
+        <event_name>x_209235_f5_as3.AS3Change</event_name>
+        <name>AS3ApiHandler</name>
+        <order>100</order>
+        <script><![CDATA[var f5App = new f5AppHelper();
+var as3 = new AS3ApiUtils();
+
+var data = JSON.parse(event.parm2);
+
+gs.info("DATA: " + JSON.stringify(data));
+var appData = data.app_data;
+var as3Definition = data.as3_definition;
+var pendingAction = data.pending_action;
+var number = data.number;
+var business_unit = data.business_unit;
+
+var cluster = f5App.getCluster(appData.dsc);
+var deviceList = f5App.getDevicesByCluster(appData.dsc);
+
+// ####################
+// Build AS3 Declaration using the following process
+// 1. Get parent template
+// 2. Get all applications under the same business unit
+// 3. Inject this record's service definition (application json)
+// 4. Populate parent template with all other service definitions from same BU
+// 5. execute API change
+// ####################
+
+var as3Declaration = f5App.getAS3TmplParent();
+var appList = f5App.getApps(business_unit);
+
+// Replace the Tenant template expression with record's business unit
+var re = new RegExp("{{\w*tenant\w*}}", "g");
+as3Declaration = as3Declaration.replace(re, business_unit);
+
+// Process service definitions for the entire tenant
+var serviceDefList = [];
+
+var stripCurlies = function(jsonString) {
+    //Remove begining and trailing curly braces from JSON content so that content can 
+    // be injected into the preexisting parent template JSON document 
+	jsonString = String(jsonString);
+    jsonString = jsonString.replace(/^\{/, "");
+    jsonString = jsonString.replace(/\}$/, "");
+    return jsonString;
+};
+
+// Add current application record's data first
+if (pendingAction != "delete") {
+	serviceDefList.push(stripCurlies(as3Definition));
+}
+
+// Add all other application definitions from this tenant into declaration
+for (var i = 0; i < appList.length; i++) {
+    if (appList[i].number != number) {    
+        serviceDefList.push(stripCurlies(appList[i].as3_definition));
+    }
+}
+// Replace the Service Definition template expression
+var serviceDefString = "";
+if (serviceDefList.length > 0) {
+	serviceDefString = ", " + serviceDefList.toString();
+}
+var re = new RegExp("{{\w*serviceDefinitions\w*}}");
+as3Declaration = as3Declaration.replace(re, serviceDefString);
+gs.info("AS3 Declaration: " + as3Declaration);
+
+// Verify and cleanup declaration JSON.  
+try {
+	var jsonData = JSON.parse(as3Declaration);
+	as3Declaration = JSON.stringify(jsonData);
+} catch (e) {
+	gs.info("AS3 Declaration JSON validation failed: " + e);
+}
+
+// ##################################
+//  Execute API Calls
+// ####################################
+
+var result = {};
+var api_failure = false;
+
+// Set API Action
+var apiMethod = "post";
+// There seems to be a problem will this. All tenant configs are wiped out when serviceDefList is 0
+//  will revisit later
+if (pendingAction == "delete" && serviceDefList.length == 0){
+	apiMethod = "delete";
+}
+
+gs.info("CLUSTER SETTINGS: " + JSON.stringify(cluster));
+gs.info("DEVICELIST SETTINGS: " + JSON.stringify(deviceList));
+	
+if (cluster.cluster_change_method == "active_no_sync" ||
+	cluster.cluster_change_method == "active_sync") {
+	var activeDevice = as3.getActiveDevice(deviceList, cluster.mid_server);
+
+	var response = as3.pushChange(
+		activeDevice,
+		cluster.mid_server,
+		apiMethod,
+		as3Declaration
+	);
+	if (response.status != 200) { api_failure = true; }
+	result[activeDevice.mgmt_ip] = response;
+
+	// Execute config sync if active_sync is CCM 
+	if (cluster.cluster_change_method == "active_sync") {
+		as3.configSync(activeDevice, cluster.mid_server, cluster.sync_group_name);
+	}
+} else {
+	for (var i = 0; i < deviceList.length; i++) {
+		var response = as3.pushChange(
+			deviceList[i],
+			cluster.mid_server,
+			apiMethod,
+			as3Declaration
+		);
+		if (response.status != 200) { api_failure = true; }
+		result[deviceList[i].mgmt_ip] = response;
+	}
+}
+
+// Save record modifications once changes are complete 
+var gr = new GlideRecord(f5App.applicationTable);
+gr.addQuery('number', number);		
+gr.query();
+if (gr.next()){
+	gr.api_response = JSON.stringify(result);
+
+	if (api_failure) {
+		gr.status = "failed";
+		gr.update();
+	}
+	else if (gr.pending_action == "create" || gr.pending_action == "update") {	
+		gr.status = "deployed";
+		gr.pending_action = "none";
+		gr.update();
+	} else if (gr.pending_action == "delete") {
+		gr.deleteRecord();
+	}
+}
+
+function stripCurlies(jsonString) {
+    //Remove begining and trailing curly braces from JSON content so that content can 
+    // be injected into the preexisting parent template JSON document 
+    jsonString = jsonString.replace(/^\{/, "");
+    jsonString = jsonString.replace(/\}$/, "");
+    return jsonString;
+}]]></script>
+        <synchronous>false</synchronous>
+        <sys_class_name>sysevent_script_action</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2019-01-07 18:52:51</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>e7e85aeadb322300a29de04a48961978</sys_id>
+        <sys_mod_count>31</sys_mod_count>
+        <sys_name>AS3ApiHandler</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
+        <sys_update_name>sysevent_script_action_e7e85aeadb322300a29de04a48961978</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2019-01-08 20:08:15</sys_updated_on>
+    </sysevent_script_action>
+</record_update>

@@ -14,44 +14,70 @@
         <run_time>1970-01-01 08:00:00</run_time>
         <run_type>on_demand</run_type>
         <script><![CDATA[var f5App = new f5AppHelper();
-//var as3 = new AS3ApiUtils();
 
-var gr = new GlideRecord('x_209235_f5_as3_integrationscripts');
-gr.addQuery('name', 'test');
+var gr = new GlideRecord(f5App.applicationTable);
+gr.addQuery('number', "APP0001089");
 gr.query();
+gr.next();
+var number = gr.getValue('number');
+var as3Definition = gr.getValue('as3_declaration');
+var business_unit = gr.getValue('business_unit');
 
-var gr2 = new GlideRecord('x_209235_f5_as3_applications');
-gr2.addQuery('number', 'APP0001066');
-gr2.query();
-gr2.next();
+var as3Declaration = f5App.getAS3TmplParent();
+var appList = f5App.getApps(business_unit);
 
-var operation = "insert";
-var appData = JSON.parse(gr2.getValue('app_data'));
+// Replace the Tenant template expression with record's business unit
+var re = new RegExp("{{\w*tenant\w*}}");
+as3Declaration = as3Declaration.replace(re, business_unit);
 
-if(gr.next()) {	
-	var evaluator = new GlideScopedEvaluator();
-	evaluator.putVariable('scriptName', gr.getValue('name'));
-	evaluator.putVariable('operation', operation);
-	evaluator.putVariable('appData', appData);
-	evaluator.putVariable('result', null);
-	var result = evaluator.evaluateScript(gr, 'script', null);
-	gs.info("THIS IS THE RESULT: " + evaluator.getVariable('result'));
+// Process service definitions for the entire tenant
+var serviceDefList = [];
+
+var stripCurlies = function(jsonString) {
+    //Remove begining and trailing curly braces from JSON content so that content can 
+    // be injected into the preexisting parent template JSON document 
+	jsonString = String(jsonString);
+    jsonString = jsonString.replace(/^\{/, "");
+    jsonString = jsonString.replace(/\}$/, "");
+    return jsonString;
+};
+
+// Add current application record's data first
+serviceDefList.push(stripCurlies(as3Definition));
+
+// Add all other application definitions from this tenant into declaration
+for (var i = 0; i < appList.length; i++) {
+	gs.info("BITCH ASS NUMBER: " + appList[i].number);
+    if (appList[i].number != number) {    
+        serviceDefList.push(stripCurlies(appList[i].as3_definition));
+    }
+}
+// Replace the Service Definition template expression
+serviceDefString = serviceDefList.toString();
+var re = new RegExp("{{\w*serviceDefinitions\w*}}");
+as3Declaration = as3Declaration.replace(re, serviceDefString);
+
+// Verify and cleanup declaration JSON.  
+try {
+	jsonData = JSON.parse(as3Declaration);
+	as3Declaration = JSON.stringify(jsonData);
+} catch (e) {
+	gs.info("AS3 Declaration JSON validation failed: " + e);
 }
 
-
-]]></script>
+gs.info(as3Declaration);]]></script>
         <sys_class_name>sysauto_script</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-11-07 17:09:31</sys_created_on>
         <sys_id>4c2194073761230040a1ae7873990e95</sys_id>
-        <sys_mod_count>67</sys_mod_count>
+        <sys_mod_count>77</sys_mod_count>
         <sys_name>test_server_script</sys_name>
         <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
         <sys_policy/>
         <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
         <sys_update_name>sysauto_script_4c2194073761230040a1ae7873990e95</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-12-31 22:01:01</sys_updated_on>
+        <sys_updated_on>2019-01-07 21:45:45</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

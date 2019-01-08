@@ -157,11 +157,6 @@ app.controller('AppDefCtrl', ['$scope', '$location', '$window', function($scope,
 
         // Only run functions if the form data is valid and this is a new application
         if (validForm) {
-            // Run input function if this an application create
-            if (!$scope.recNumber) {
-                runInputFunctions($scope.activeUiSpec);
-            }
-
             // Send data to ServiceNow
 			snCreateApp($scope.appData);
 			
@@ -334,18 +329,6 @@ app.controller('AppDefCtrl', ['$scope', '$location', '$window', function($scope,
         $scope.appFormHtml = generateFormHTML($scope.activeUiSpec);
     }
 
-    function runInputFunctions(uiSpec) {
-        uiSpec.sections.forEach(function(sect) {
-            sect.attributes.forEach(function(attr) {
-                // Single value attributes - default to empty string
-                if (attr.inputType === "function") {
-					$scope.appData[attr.templateId] = snRunCustomFunc(attr.functionName, $scope.appData);
-                    //$scope.appData[attr.templateId] = window[attr.functionName]($scope.appData);
-                } 
-            });
-        });
-    }
-
     function generateFormHTML(uiSpec) {
         var section_template = String.raw`
         <div class="card">
@@ -383,8 +366,8 @@ app.controller('AppDefCtrl', ['$scope', '$location', '$window', function($scope,
                     </div>
                 </div>
         `;
-    
-        var function_template = String.raw`
+		
+		var script_template = String.raw`
                 <div class="form-group">
                     <label for="{{{templateId}}}">{{{label}}}</label>
                     <input type="text" class="form-control" id="{{{templateId}}}" 
@@ -436,14 +419,14 @@ app.controller('AppDefCtrl', ['$scope', '$location', '$window', function($scope,
             // Replace attributes field
             var attr_html = "";
             sect.attributes.forEach(function(attr) {
-                var html;
+                var html = "";
                 // Set attribute html template
                 if (attr.inputType === "text"){
                     html = cleanTemplateTags(text_input_template);
                 } else if (attr.inputType === "choiceList"){
                     html = cleanTemplateTags(choice_select_template);
-                } else if (attr.inputType === "function"){
-                    html = cleanTemplateTags(function_template);
+                } else if (attr.inputType === "script"){
+                    html = cleanTemplateTags(script_template);
                 } else if (attr.inputType === "listOfText"){
                     html = cleanTemplateTags(listOfText_template);
                 } else if (attr.inputType === "checkbox"){
@@ -585,14 +568,14 @@ function snUpdateApp(number, appData){
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-10-30 15:26:24</sys_created_on>
         <sys_id>437cee583721230040a1ae7873990e01</sys_id>
-        <sys_mod_count>100</sys_mod_count>
+        <sys_mod_count>105</sys_mod_count>
         <sys_name>x_209235_f5_as3.angularApp</sys_name>
         <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
         <sys_policy/>
         <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
         <sys_update_name>sys_ui_script_437cee583721230040a1ae7873990e01</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-12-28 20:39:43</sys_updated_on>
+        <sys_updated_on>2019-01-02 19:07:39</sys_updated_on>
         <use_scoped_format>false</use_scoped_format>
     </sys_ui_script>
 </record_update>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <record_update sys_domain="global" table="sysevent_script_action">
     <sysevent_script_action action="INSERT_OR_UPDATE">
-        <active>true</active>
+        <active>false</active>
         <condition_script/>
         <description/>
         <event_name>x_209235_f5_as3.AS3Change</event_name>
@@ -21,61 +21,57 @@ var deviceList = f5App.getDevicesByCluster(appData.dsc);
 
 var result = {};
 var api_failure = false;
-try {
 	
-	if (cluster.cluster_change_method == "active_no_sync" ||
-	    cluster.cluster_change_method == "active_sync") {
-		var activeDevice = as3.getActiveDevice(deviceList, cluster.mid_server);
-		
+if (cluster.cluster_change_method == "active_no_sync" ||
+	cluster.cluster_change_method == "active_sync") {
+	var activeDevice = as3.getActiveDevice(deviceList, cluster.mid_server);
+
+	var response = as3.pushChange(
+		activeDevice,
+		cluster.mid_server,
+		pendingAction,
+		as3Declaration
+	);
+	if (response.status != 200) { api_failure = true; }
+	result[activeDevice.mgmt_ip] = response;
+
+	// Execute config sync if active_sync is CCM 
+	if (cluster.cluster_change_method == "active_sync") {
+		as3.configSync(activeDevice, cluster.mid_server, cluster.sync_group_name);
+	}
+} else {
+	for (var i = 0; i < deviceList.length; i++) {
 		var response = as3.pushChange(
-			activeDevice,
+			deviceList[i],
 			cluster.mid_server,
 			pendingAction,
 			as3Declaration
 		);
 		if (response.status != 200) { api_failure = true; }
-		result[activeDevice.mgmt_ip] = response;
-		
-		// Execute config sync if active_sync is CCM 
-		if (cluster.cluster_change_method == "active_sync") {
-			as3.configSync(activeDevice, cluster.mid_server, cluster.sync_group_name);
-		}
-	} else {
-		for (var i = 0; i < deviceList.length; i++) {
-			var response = as3.pushChange(
-				deviceList[i],
-				cluster.mid_server,
-				pendingAction,
-				as3Declaration
-			);
-			if (response.status != 200) { api_failure = true; }
-			result[deviceList[i].mgmt_ip] = response;
-		}
+		result[deviceList[i].mgmt_ip] = response;
 	}
-	
-	// Implement record modification once changes are complete 
-	var gr = new GlideRecord(f5App.applicationTable);
-	gr.addQuery('number', number);		
-	gr.query();
-	if (gr.next()){
-		gr.api_response = JSON.stringify(result);
+}
 
-		if (api_failure) {
-			gr.status = "failed";
-			gr.update();
-		}
-		else if (gr.pending_action == "create" || gr.pending_action == "update") {	
-			gr.status = "deployed";
-			gr.pending_action = "none";
-			gr.update();
-		} else if (gr.pending_action == "delete") {
-			gr.deleteRecord();
-		}
+// Implement record modification once changes are complete 
+var gr = new GlideRecord(f5App.applicationTable);
+gr.addQuery('number', number);		
+gr.query();
+if (gr.next()){
+	gr.api_response = JSON.stringify(result);
+
+	if (api_failure) {
+		gr.status = "failed";
+		gr.update();
 	}
-	
-} catch(err) {
-	gs.info("SCRIPT ACTION ERROR " + err);
-}]]></script>
+	else if (gr.pending_action == "create" || gr.pending_action == "update") {	
+		gr.status = "deployed";
+		gr.pending_action = "none";
+		gr.update();
+	} else if (gr.pending_action == "delete") {
+		gr.deleteRecord();
+	}
+}
+	]]></script>
         <synchronous>false</synchronous>
         <sys_class_name>sysevent_script_action</sys_class_name>
         <sys_created_by>admin</sys_created_by>
@@ -83,7 +79,7 @@ try {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>df6342873765230040a1ae7873990e98</sys_id>
-        <sys_mod_count>53</sys_mod_count>
+        <sys_mod_count>55</sys_mod_count>
         <sys_name>AS3ApiAction</sys_name>
         <sys_overrides/>
         <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
@@ -91,6 +87,6 @@ try {
         <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
         <sys_update_name>sysevent_script_action_df6342873765230040a1ae7873990e98</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-12-22 21:18:48</sys_updated_on>
+        <sys_updated_on>2019-01-07 17:01:16</sys_updated_on>
     </sysevent_script_action>
 </record_update>

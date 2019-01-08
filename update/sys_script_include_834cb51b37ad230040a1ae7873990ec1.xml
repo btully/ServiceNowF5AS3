@@ -17,24 +17,24 @@ AS3ApiUtils.prototype = {
 		
 		for (var i = 0; i < deviceList.length; i++) {
 			var response = execRestCall(deviceList[i], mid_server, method, uri, null);
-			for (var j = 0; j < response.body.items.length; j++) {
-				var item = response.body.items[j];
-				if (item.selfDevice == "true" && item.failoverState == "active") { 
-					return deviceList[i]; 
+			
+			if (response.status == 200) {
+				var responseJSON = JSON.parse(response.body);
+				for (var j = 0; j < responseJSON.items.length; j++) {
+					var item = responseJSON.items[j];
+					if (item.selfDevice == "true" && item.failoverState == "active") { 
+						return deviceList[i]; 
+					}
 				}
 			}
 		}
 		return null;
 	},
-	pushChange: function(device, mid_server, pending_action, as3Dec) {
-		var method = '';
-		if (pending_action == 'create') {method = 'post';}
-		else if (pending_action == 'delete') {method = 'delete';}
-		else {method = 'patch';}
-		
+	pushChange: function(device, mid_server, method, as3Dec) {
 		var uri = "/mgmt/shared/appsvcs/declare";
-		
-		return execRestCall(device, mid_server, method, uri, as3Dec);
+		var response = execRestCall(device, mid_server, method, uri, JSON.parse(as3Dec));
+		response.body = JSON.parse(response.body);
+		return response;
 	},
 	configSync: function(device, mid_server, syncGroup) {
 		var method = 'post';
@@ -59,32 +59,45 @@ function execRestCall(device, mid_server, method, uri, data) {
 
 	var response = restMessage.execute();
 	var status = response.getStatusCode();
-	var responseBody = {};
+	var responseBody = response.getBody();
+	// Cleanup JSON if response is JSON
+// 	if (IsJsonString(responseBody)){
+// 		responseBody = JSON.parse(responseBody);
+// 	}
+	
 	var responseError = null;
 	if (response.haveError()) {
 		responseError = response.getErrorMessage();
-	} else {
-		responseBody = response.getBody();
-	}
-
+	} 
+	
+	gs.info("METHOD: " + method);
 	gs.info("REQ BODY: " + restMessage.getRequestBody());
 	gs.info("RESPONSE ERROR: " + responseError);
 	gs.info("RESPONSE STATUS: " + status);
-	gs.info("RESPONSE BODY: " + responseBody);
+	gs.info("RESPONSE BODY: " + JSON.stringify(JSON.parse(responseBody)));
 	
-	return { status: status, body: JSON.parse(responseBody), error: responseError};
+	return { status: status, body: responseBody, error: responseError};
+}
+
+function IsJsonString(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
 }]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-11-08 19:55:46</sys_created_on>
         <sys_id>834cb51b37ad230040a1ae7873990ec1</sys_id>
-        <sys_mod_count>25</sys_mod_count>
+        <sys_mod_count>44</sys_mod_count>
         <sys_name>AS3ApiUtils</sys_name>
         <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
         <sys_update_name>sys_script_include_834cb51b37ad230040a1ae7873990ec1</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-12-22 21:17:57</sys_updated_on>
+        <sys_updated_on>2019-01-08 20:35:59</sys_updated_on>
     </sys_script_include>
 </record_update>

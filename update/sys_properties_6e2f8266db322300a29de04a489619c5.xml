@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_properties">
+    <sys_properties action="INSERT_OR_UPDATE">
+        <choices/>
+        <description>AS3 Template Parent</description>
+        <ignore_cache>false</ignore_cache>
+        <is_private>false</is_private>
+        <name>x_209235_f5_as3.as3TmplParent</name>
+        <read_roles>x_209235_f5_as3.admin</read_roles>
+        <suffix>as3TmplParent</suffix>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2019-01-07 16:27:40</sys_created_on>
+        <sys_id>6e2f8266db322300a29de04a489619c5</sys_id>
+        <sys_mod_count>10</sys_mod_count>
+        <sys_name>x_209235_f5_as3.as3TmplParent</sys_name>
+        <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
+        <sys_update_name>sys_properties_6e2f8266db322300a29de04a489619c5</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2019-01-08 19:46:35</sys_updated_on>
+        <type>string</type>
+        <value>{ "class": "ADC", "schemaVersion": "3.5.0", "id": "ServiceNow{{tenant}}", "{{tenant}}": { "class": "Tenant"  {{serviceDefinitions}} }}</value>
+        <write_roles>x_209235_f5_as3.admin</write_roles>
+    </sys_properties>
+    <sys_translated_text action="delete_multiple" query="documentkey=6e2f8266db322300a29de04a489619c5"/>
+</record_update>

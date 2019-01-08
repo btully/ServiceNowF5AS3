@@ -18,9 +18,13 @@ f5AppHelper.prototype = {
 		this.AS3ChangeEvent = 'x_209235_f5_as3.AS3Change';
 		this.approvalNotifyEvent = 'x_209235_f5_as3.sendApprovalNotification';
 		this.adminEmailProp = 'x_209235_f5_as3.adminEmailAlias';
+		this.AS3TmplParentProp = 'x_209235_f5_as3.as3TmplParent';
 	},
 	getAdminEmail: function() {
 		return gs.getProperty(this.adminEmailProp);
+	},
+	getAS3TmplParent: function() {
+		return gs.getProperty(this.AS3TmplParentProp);
 	},
 	getMidServers: function() {
 		var gr = new GlideRecord('ecc_agent');
@@ -39,6 +43,42 @@ f5AppHelper.prototype = {
 		gr.get(gs.getUserID());
 		return gr.department.getDisplayValue();
 	},
+	getScriptedAttrs: function(number) {
+		var gr = new GlideRecord(this.templateTable);
+		gr.addQuery('number', number);
+		gr.query();
+		
+		var scriptedAttrs = [];
+		if (gr.next()) {
+			var uiSpec = JSON.parse(gr.getValue('ui_specification'));
+			for (var i = 0; i < uiSpec.sections.length; i++) {
+				var sect = uiSpec.sections[i];
+				for (var j = 0; j < sect.attributes.length; j++) {
+					var attr = sect.attributes[j];
+					if(attr.inputType == "script") {
+                        scriptedAttrs.push({ templateId: attr.templateId, scriptName: attr.scriptName});
+                    }
+				}
+			}
+		}
+		return scriptedAttrs;
+	},
+	execScriptedAttr: function(scriptName, operation, appData) {
+		var result = "";
+		var gr = new GlideRecord('x_209235_f5_as3_integrationscripts');
+		gr.addQuery('name', scriptName);
+		gr.query();
+		if(gr.next()) {	
+			var evaluator = new GlideScopedEvaluator();
+			evaluator.putVariable('scriptName', gr.getValue('name'));
+			evaluator.putVariable('operation', operation);
+			evaluator.putVariable('appData', appData);
+			evaluator.putVariable('result', null);
+			evaluator.evaluateScript(gr, 'script', null);
+			result = evaluator.getVariable('result');
+		}
+		return result;
+	},
 	getAppData: function(number) {
 		var gr = new GlideRecord(this.applicationTable);
 		gr.addQuery('number', number);
@@ -51,13 +91,16 @@ f5AppHelper.prototype = {
 		//gs.info(appData);
 		return appData;
 	},
-	getApps: function() { 		
+	getApps: function(business_unit) { 		
 		var gr = new GlideRecord(this.applicationTable);
 		
 		// If user is not an admin only show applications current department
 		var currentUser = gs.getUser(); 
         if (!currentUser.hasRole(this.f5AdminRole)){
 			gr.addQuery('business_unit', this.getUserBusUnit());
+		} 
+		if (business_unit) {
+			gr.addQuery('business_unit', business_unit);
 		}
 		gr.query();
 		
@@ -66,7 +109,7 @@ f5AppHelper.prototype = {
 			appList.push({
 				number: gr.getValue('number'),
 				appData: JSON.parse(gr.getValue('app_data')),
-				as3_definition: gr.getValue('as3_definition'),
+				as3_definition: gr.getValue('as3_declaration'),
 				approval: gr.getValue('approval'),
 				status: gr.getValue('status'),
 				pending_action: gr.getValue('pending_action')
@@ -186,13 +229,13 @@ f5AppHelper.prototype = {
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2018-10-08 18:23:09</sys_created_on>
         <sys_id>ce020ad93741230040a1ae7873990e66</sys_id>
-        <sys_mod_count>81</sys_mod_count>
+        <sys_mod_count>89</sys_mod_count>
         <sys_name>f5AppHelper</sys_name>
         <sys_package display_value="F5_AS3" source="x_209235_f5_as3">00ecd5513701230040a1ae7873990e4e</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="F5_AS3">00ecd5513701230040a1ae7873990e4e</sys_scope>
         <sys_update_name>sys_script_include_ce020ad93741230040a1ae7873990e66</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2018-12-31 19:56:04</sys_updated_on>
+        <sys_updated_on>2019-01-07 21:45:15</sys_updated_on>
     </sys_script_include>
 </record_update>
